@@ -1,25 +1,12 @@
 package ua.internteam.dreamteamgame;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.content.Intent;
-import android.net.Uri;
-
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,9 +15,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btn = (Button) findViewById(R.id.setIP);
-        EditText editText = (EditText) findViewById(R.id.urlET);
 
+        Button btn = (Button) findViewById(R.id.setIP);
+        final EditText editText = (EditText) findViewById(R.id.urlET);
+
+        editText.setText("rtmp://10.0.1.125/hls/stream");
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickM(editText.getText().toString());
+            }
+        });
 
     }
 
@@ -40,5 +36,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
-
 }
+

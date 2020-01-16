@@ -41,5 +41,14 @@ public class MediaPlayerActivity extends AppCompatActivity {
             bundle.remove("streamURL");
         }
 
+        SimpleExoPlayer player = new MediaPlayer(this).getMediaPlayer();
+        PlayerView playerView = findViewById(R.id.simple_player);
+        playerView.setPlayer(player);
+
+        MediaSource videoSource = new MediaPlayerSource(url).getMediaSource();
+//Prepare the player with the source.
+        player.prepare(videoSource);
+//auto start playing
+        player.setPlayWhenReady(true);
     }
 }
