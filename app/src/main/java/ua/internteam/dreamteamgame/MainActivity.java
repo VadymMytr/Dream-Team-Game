@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
         Button btn = (Button) findViewById(R.id.setIP);
         final EditText editText = (EditText) findViewById(R.id.urlET);
 
-        editText.setText("rtmp://10.0.1.125/hls/stream");
+//        editText.setText("rtmp://10.0.1.125/hls/stream");
+        editText.setText("rtmp://stream1.livestreamingservices.com:1935/tvmlive/tvmlive");
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

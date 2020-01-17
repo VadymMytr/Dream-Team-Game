@@ -5,28 +5,73 @@
     android:id="@+id/activity_media_player"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:baselineAligned="false"
     android:orientation="vertical"
     android:weightSum="1">
 
-
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/simple_player"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.9"
-        app:use_controller="false" />
+        android:background="@color/black">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/simple_player"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:use_controller="false" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <EditText
-        android:id="@+id/answerET"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/answerLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.1"
-        android:autofillHints=""
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/answer" />
+        android:background="@color/white">
+
+        <EditText
+            android:id="@+id/answerET"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:autofillHints=""
+            android:background="@color/white"
+            android:ems="10"
+            android:hint="@string/answer"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            app:layout_constraintBaseline_toBaselineOf="@id/button"
+            app:layout_constraintEnd_toStartOf="@id/button"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:targetApi="o" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:height="@dimen/exo_media_button_height"
+            android:background="@color/colorAccent"
+            android:text="@string/send"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/answerET"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </LinearLayout>
