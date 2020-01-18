@@ -15,27 +15,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         Button btn = (Button) findViewById(R.id.setIP);
-        final EditText editText = (EditText) findViewById(R.id.urlET);
-
-//        editText.setText("rtmp://10.0.1.125/hls/stream");
-        editText.setText("rtmp://stream1.livestreamingservices.com:1935/tvmlive/tvmlive");
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickM(editText.getText().toString());
+                onClickM();
             }
         });
 
     }
 
-    void onClickM(String url){
-        Intent intent = new Intent(this, MediaPlayerActivity.class);
-        intent.putExtra("streamURL",url);
+    void onClickM(){
+        Intent intent = new Intent(this, QRScannerActivity.class);
         startActivity(intent);
-
     }
 }
 
