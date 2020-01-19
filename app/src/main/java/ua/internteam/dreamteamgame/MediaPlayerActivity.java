@@ -13,6 +13,9 @@ import com.google.android.exoplayer2.ui.PlayerView;
 
 public class MediaPlayerActivity extends AppCompatActivity {
     private int currentApiVersion;
+    private PlayerView playerView;
+    private String url;
+    private SimpleExoPlayer player;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,15 +45,26 @@ public class MediaPlayerActivity extends AppCompatActivity {
                 }
             });
         }
+
         Bundle bundle = getIntent().getExtras();
-        String url = "";
         if (bundle!=null){
             url = bundle.getString("streamURL");
             bundle.remove("streamURL");
         }
+        playerView = findViewById(R.id.simple_player);
+        initializePlayer();
+    }
 
-        SimpleExoPlayer player = new MediaPlayer(this).getMediaPlayer();
-        PlayerView playerView = findViewById(R.id.simple_player);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(player == null)
+            initializePlayer();
+    }
+
+    private void initializePlayer(){
+        player = new MediaPlayer(this).getMediaPlayer();
+
         playerView.setPlayer(player);
 
         MediaSource videoSource = new MediaPlayerSource(url).getMediaSource();
@@ -58,7 +72,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
         player.prepare(videoSource);
 //auto start playing
         player.setPlayWhenReady(true);
-
     }
 
     @SuppressLint("NewApi")
