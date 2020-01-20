@@ -11,15 +11,37 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MediaPlayerActivity extends AppCompatActivity {
     private int currentApiVersion;
     private PlayerView playerView;
     private String url;
     private SimpleExoPlayer player;
+    private MediaSource videoSource;
+    private Timer timer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_player);
+        playerView = findViewById(R.id.simple_player);
+
+        setStyle();
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle!=null){
+            url = bundle.getString("streamURL");
+            bundle.remove("streamURL");
+        }
+        initializePlayer();
+
+        timer = new Timer();
+        timer.schedule(new UpdateTimeTask(), 0, 1000);
+    }
+
+    private void setStyle(){
         currentApiVersion = android.os.Build.VERSION.SDK_INT;
         final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -45,29 +67,17 @@ public class MediaPlayerActivity extends AppCompatActivity {
                 }
             });
         }
-
-        Bundle bundle = getIntent().getExtras();
-        if (bundle!=null){
-            url = bundle.getString("streamURL");
-            bundle.remove("streamURL");
-        }
-        playerView = findViewById(R.id.simple_player);
-        initializePlayer();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if(player == null)
-            initializePlayer();
+    protected void onStop() {
+        super.onStop();
     }
 
     private void initializePlayer(){
-        player = new MediaPlayer(this).getMediaPlayer();
-
+        player = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
-
-        MediaSource videoSource = new MediaPlayerSource(url).getMediaSource();
+        videoSource = new MediaPlayerSource(url).getMediaSource();
 //Prepare the player with the source.
         player.prepare(videoSource);
 //auto start playing
@@ -86,4 +96,17 @@ public class MediaPlayerActivity extends AppCompatActivity {
         }
     }
 
+    private class UpdateTimeTask extends TimerTask{
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    player.clearVideoDecoderOutputBufferRenderer();
+                    if(!player.isLoading())
+                        player.retry();
+                }
+            });
+        }
+    }
 }
