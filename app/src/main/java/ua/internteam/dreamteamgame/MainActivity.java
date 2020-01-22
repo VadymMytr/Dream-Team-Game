@@ -43,10 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void onClickM() {
-        answer = editText.getText().toString();
-        new ProgressTask().execute();
 
+    void onClickM() {
+//         answer = editText.getText().toString();
+//         new ProgressTask().execute();
+  Intent intent = new Intent(this, QRScannerActivity.class);
+        startActivity(intent);
     }
 
     class ProgressTask extends AsyncTask<Void, Integer, Void> {
