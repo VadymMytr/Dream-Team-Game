@@ -1,6 +1,7 @@
 package ua.internteam.dreamteamgame;
 
 import android.annotation.SuppressLint;
+
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MediaPlayerActivity extends AppCompatActivity {
-    private int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+    private int currentApiVersion;
     private PlayerView playerView;
     private String url;
     private SimpleExoPlayer player;
@@ -31,6 +32,8 @@ public class MediaPlayerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+                currentApiVersion = android.os.Build.VERSION.SDK_INT;
         setViews();
         setStyle();
         setStreamUrl();
@@ -68,6 +71,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
             url = bundle.getString("streamURL");
             bundle.remove("streamURL");
         }
+
     }
 
     private void initializePlayer(){
@@ -115,8 +119,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
                     if(player.isPlaying())
                         saver.setVisibility(View.GONE);
-                    else
-                        player.retry();
+
                 }
             });
         }
