@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DreamTeamGame</string>
+    <string name="answer">Відповідь</string>
+    <string name="send">Відправити</string>
+    <string name="info">інфа</string>
+    <string name="hello">Привіт як справи вітємо у грі</string>
+    <string name="tab">натисни</string>
 </resources>
