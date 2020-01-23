@@ -6,17 +6,14 @@ public class Answer {
     private Team team;
     private String text;
 
-    public Answer(int id, int number, Team team, String text) {
-        this.id = id;
+    public Answer(int number, Team team, String text){
         this.team = team;
         this.number = number;
         this.text = text;
     }
-
-    public Answer( int number, Team team, String text) {
-        this.team = team;
-        this.number = number;
-        this.text = text;
+    public Answer(int id, int number, Team team, String text) {
+        this(number, team, text);
+        this.id = id;
     }
 
 

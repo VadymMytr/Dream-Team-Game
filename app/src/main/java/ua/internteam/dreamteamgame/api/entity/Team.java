@@ -1,23 +1,15 @@
 package ua.internteam.dreamteamgame.api.entity;
 
-public class Team {
+import java.io.Serializable;
 
-    private int id;
+public class Team implements Serializable {
+
+    private String token;
     private String name;
 
-    public Team(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Team(String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Team(int id) {
-        this.id = id;
-        this.name = name;
+    public Team(String token, String name) {
+       this.token = token;
+       this.name = name;
     }
 
     public String getName() {
@@ -28,11 +20,8 @@ public class Team {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public String getToken() {
+        return token;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 }
