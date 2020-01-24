@@ -2,47 +2,64 @@ package ua.internteam.dreamteamgame;
 
 import android.annotation.SuppressLint;
 
-import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.IOException;
+
+import ua.internteam.dreamteamgame.api.Api;
+import ua.internteam.dreamteamgame.api.entity.Answer;
+import ua.internteam.dreamteamgame.api.entity.Team;
 
 public class MediaPlayerActivity extends AppCompatActivity {
     private int currentApiVersion;
+    private Api api;
+    private Team team;
+
     private PlayerView playerView;
-    private String url;
     private SimpleExoPlayer player;
     private MediaSource videoSource;
-    private Timer timer;
     private ImageView saver;
+
+    private String streamUrl;
+    private String serverUrl;
+
+    private EditText answerField;
+    private String answer;
+    private Integer count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-                currentApiVersion = android.os.Build.VERSION.SDK_INT;
         setViews();
         setStyle();
-        setStreamUrl();
+        setIntents();
+        System.out.println(streamUrl);
+        setApi();
 
         initializePlayer();
-        initializeRefreshTimer();
-
         preparePlayerToPlay();
+
+        setAnswerPart();
     }
+
     @Override
     public void onBackPressed() {
         Toast.makeText(this, "Неможлиово вийти назад", Toast.LENGTH_SHORT).show();
@@ -65,24 +82,56 @@ public class MediaPlayerActivity extends AppCompatActivity {
         saver = findViewById(R.id.imageView);
         playerView = findViewById(R.id.simple_player);
     }
-    private void setStreamUrl(){
+
+    private void setIntents(){
         Bundle bundle = getIntent().getExtras();
         if (bundle!=null){
-            url = bundle.getString("streamURL");
+            serverUrl = bundle.getString("serverURL");
+            bundle.remove("serverURL");
+            streamUrl = bundle.getString("streamURL");
             bundle.remove("streamURL");
+//            team = (Team) bundle.get("team");
+//            bundle.remove("team");
         }
+    }
 
+    private void setApi(){
+        currentApiVersion = android.os.Build.VERSION.SDK_INT;
+        api = new Api(serverUrl);
+        count = 0;
+    }
+
+    private void setAnswerPart(){
+        answerField = findViewById(R.id.answerET);
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                answer = answerField.getText().toString();
+                answerField.setText("");
+                new ProgressTask().execute();
+            }
+        });
     }
 
     private void initializePlayer(){
         player = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
-        videoSource = new MediaPlayerSource(url).getMediaSource();
+        videoSource = new MediaPlayerSource(streamUrl).getMediaSource();
         player.setPlayWhenReady(true);
-    }
-    private void initializeRefreshTimer(){
-        timer = new Timer();
-        timer.schedule(new UpdateTimeTask(), 0, 1000);
+        player.addListener(new Player.EventListener() {
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+                player.retry();
+            }
+        });
+        player.addAnalyticsListener(new AnalyticsListener() {
+            @Override
+            public void onIsPlayingChanged(EventTime eventTime, boolean isPlaying) {
+                if(isPlaying)
+                    saver.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void preparePlayerToPlay() { player.prepare(videoSource); }
@@ -109,19 +158,28 @@ public class MediaPlayerActivity extends AppCompatActivity {
         }
     }
 
-    private class UpdateTimeTask extends TimerTask{
+
+    class ProgressTask extends AsyncTask<Void, Integer, Void> {
+        Answer answera;
         @Override
-        public void run() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    player.clearVideoDecoderOutputBufferRenderer();
+        protected Void doInBackground(Void... unused) {
+            try {
+                answera = api.sendAnswer( new Answer( count++,team, answer) );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return (null);
+        }
 
-                    if(player.isPlaying())
-                        saver.setVisibility(View.GONE);
+        @Override
+        protected void onProgressUpdate(Integer... items) {
 
-                }
-            });
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            Toast.makeText(getApplicationContext(), "send: "+answera.getText(), Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 }
