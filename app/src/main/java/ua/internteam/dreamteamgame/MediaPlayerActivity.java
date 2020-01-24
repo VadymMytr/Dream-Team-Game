@@ -51,7 +51,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
         setViews();
         setStyle();
         setIntents();
-        System.out.println(streamUrl);
         setApi();
 
         initializePlayer();
@@ -90,8 +89,8 @@ public class MediaPlayerActivity extends AppCompatActivity {
             bundle.remove("serverURL");
             streamUrl = bundle.getString("streamURL");
             bundle.remove("streamURL");
-//            team = (Team) bundle.get("team");
-//            bundle.remove("team");
+            team = (Team) bundle.get("team");
+            bundle.remove("team");
         }
     }
 

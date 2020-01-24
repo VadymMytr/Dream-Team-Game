@@ -22,7 +22,6 @@ import com.google.zxing.Result;
 import java.io.IOException;
 
 import ua.internteam.dreamteamgame.api.Api;
-import ua.internteam.dreamteamgame.api.entity.Answer;
 import ua.internteam.dreamteamgame.api.entity.StreamUrl;
 import ua.internteam.dreamteamgame.api.entity.Team;
 
@@ -31,8 +30,9 @@ public class QRScannerActivity extends AppCompatActivity {
     private CodeScanner mCodeScanner;
     private Api api;
 
-    private String teamToken;
-    private String streamURL;
+    private String serverURL;
+    private Team team;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,32 +86,8 @@ public class QRScannerActivity extends AppCompatActivity {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        String[] resultParts = result.getText().split("\\|");
-                        String serverURL = resultParts[0];
-                        teamToken = resultParts[1];
-                        System.out.println(serverURL + "\n" +teamToken);
-                        api = new Api(serverURL);
-
-                        try {
-                            streamURL = api.getStreamUrl(new Team(teamToken, ""));
-                            System.out.println(streamURL);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-//                        Team team = null;
-//                        try {
-//                            team = getTeamFromBase(new Team(teamToken, ""));
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-
-                        Intent intent;
-                        intent = new Intent(activity, MediaPlayerActivity.class);
-                        intent.putExtra("serverURL", serverURL);
-                        intent.putExtra("streamURL", streamURL);
-//                        intent.putExtra("team", team);
-                        startActivity(intent);
+                        decodeQR(result.getText());
+                        new SendStreamUrlRequest().execute();
                     }
                 });
             }
@@ -125,27 +101,38 @@ public class QRScannerActivity extends AppCompatActivity {
         });
     }
 
-    private Team getTeamFromBase(Team team) throws IOException {
-        return team = api.getTeam(new Team(team.getToken(), ""));
+
+    private void decodeQR(String qrText){
+        //<server_url>|<team_token>
+        String[] resultParts = qrText.split("\\|");
+        serverURL = resultParts[0];
+        team = new Team(resultParts[1], "");
+        api = new Api(serverURL);
+    }
+    private void navigateToStreamActivity(StreamUrl streamURL) {
+        Intent intent;
+        intent = new Intent(activity, MediaPlayerActivity.class);
+        intent.putExtra("serverURL", serverURL);
+        intent.putExtra("streamURL", streamURL.getUrl());
+        intent.putExtra("team", team);
+        startActivity(intent);
     }
 
-//    private String getStreamUrl(String teamToken) throws IOException {
-//    }
-
-    class ProgressTask extends AsyncTask<Void, Integer, Void> {
+    class SendStreamUrlRequest extends AsyncTask<Void, Integer, StreamUrl> {
         @Override
-        protected Void doInBackground(Void... unused) {
+        protected StreamUrl doInBackground(Void... unused) {
             try {
-                streamURL = api.getStreamUrl(new Team(teamToken, ""));
+                return api.getStreamUrl(team);
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
-            return (null);
         }
 
         @Override
-        protected void onProgressUpdate(Integer... items) {
-
+        protected void onPostExecute(StreamUrl streamUrl) {
+            if (streamUrl != null)
+                navigateToStreamActivity(streamUrl);
         }
     }
 }

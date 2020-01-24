@@ -30,28 +30,30 @@ public class Api {
         this.gson = new Gson();
     }
 
-    public void setUrl(String url) {
-        this.serverUrl = url;
+    public String getUrl() {
+        return serverUrl;
     }
 
     public Answer sendAnswer(Answer answer) throws IOException {
         RequestBody body = RequestBody.create(JSON, gson.toJson(answer));
         Request request = new Request.Builder()
-                .url(serverUrl + "/answer/add")
+                .url(serverUrl + "/answer")
                 .post(body)
                 .build();
         Response response = client.newCall(request).execute();
         return gson.fromJson(response.body().string(),Answer.class);
     }
 
-    public String getStreamUrl(Team team) throws IOException {
+    public StreamUrl getStreamUrl(Team team) throws IOException {
         RequestBody body = RequestBody.create(JSON, gson.toJson(team));
         Request request = new Request.Builder()
                 .url(serverUrl + "/geturl")
                 .post(body)
                 .build();
         Response response = client.newCall(request).execute();
-        return response.body().string();
+        String streamUrl = response.body().string();
+        System.out.println(streamUrl);
+        return gson.fromJson(streamUrl, StreamUrl.class);
     }
     
     public Team getTeam(Team team) throws IOException{
