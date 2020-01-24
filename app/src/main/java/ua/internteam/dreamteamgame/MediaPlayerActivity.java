@@ -141,7 +141,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
         toast.setGravity(Gravity.CENTER, 0, 0);
         LinearLayout toastContainer = (LinearLayout) toast.getView();
         ImageView attentionImage = new ImageView(getApplicationContext());
-        attentionImage .setImageResource(R.drawable.attention);
+        attentionImage .setImageResource(R.drawable.attention1);
         toastContainer.addView(attentionImage , 0);
         toast.show();
     }
