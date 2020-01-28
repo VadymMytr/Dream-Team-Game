@@ -116,6 +116,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     private void initializePlayer(){
         player = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
+        player.setVolume(0);
         videoSource = new MediaPlayerSource(streamUrl).getMediaSource();
         player.setPlayWhenReady(true);
         player.addListener(new Player.EventListener() {
@@ -129,6 +130,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
             public void onIsPlayingChanged(EventTime eventTime, boolean isPlaying) {
                 if(isPlaying)
                     saver.setVisibility(View.GONE);
+
             }
         });
     }
