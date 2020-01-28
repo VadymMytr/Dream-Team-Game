@@ -109,6 +109,7 @@ public class QRScannerActivity extends AppCompatActivity {
         team = new Team(resultParts[1], "");
         api = new Api(serverURL);
     }
+
     private void navigateToStreamActivity(StreamUrl streamURL) {
         Intent intent;
         intent = new Intent(activity, MediaPlayerActivity.class);
