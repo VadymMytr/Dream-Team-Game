@@ -8,12 +8,14 @@ public class Team implements Serializable {
     private String token;
     private String name;
 
-    public Team(){
+    public Team() {
         token = "";
         name = "";
     }
+
     public Team(String token) {
-       this.token = token;
+        this();
+        this.token = token;
     }
 
     public String getName() {

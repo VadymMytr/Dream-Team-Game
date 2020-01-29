@@ -104,19 +104,19 @@ public class QRScannerActivity extends AppCompatActivity {
         });
     }
 
-    private void setIsCaptainDevice(String qrText){
-    //check for captain mode
-        if(qrText.contains("http")) //captain has server link
+    private void setIsCaptainDevice(String qrText) {
+        //check for captain mode
+        if (qrText.contains("http")) //captain has server link
             isCaptainDevice = true;
-        else if(qrText.contains("rtmp")) //player has stream link
+        else if (qrText.contains("rtmp")) //player has stream link
             isCaptainDevice = false;
         else
             isCaptainDevice = null;
     }
 
-    private void decodeQR(String qrText){
+    private void decodeQR(String qrText) {
         //captain device:
-        if(isCaptainDevice) {
+        if (isCaptainDevice) {
             //<server_url>|<team_token>
             String[] resultParts = qrText.split("\\|");
             serverURL = resultParts[0];
@@ -137,7 +137,7 @@ public class QRScannerActivity extends AppCompatActivity {
         intent.putExtra("isCaptainDevice", isCaptainDevice);
 
         //captain also have to put serverURL and team info
-        if(isCaptainDevice) {
+        if (isCaptainDevice) {
             intent.putExtra("serverURL", serverURL);
             intent.putExtra("team", team);
         }

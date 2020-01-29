@@ -8,16 +8,17 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.WriterException;
+
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import ua.internteam.dreamteamgame.api.entity.Team;
 
 public class QRGeneratorActivity extends AppCompatActivity {
-    String serverUrl;
+    Boolean isCaptainDevice;
     String streamUrl;
-    Team team;
 
-    Boolean captainMode;
+    String serverUrl;
+    Team team;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,17 +27,18 @@ public class QRGeneratorActivity extends AppCompatActivity {
 
         getIntentInfo();
         generateQr(streamUrl);
+        //TODO add button and navigation to next activity on click
+//        navigateToVideoPlayerActivity();
     }
 
-    private void generateQr(String streamLink){
+    private void generateQr(String streamLink) {
         QRGEncoder qrgEncoder = new QRGEncoder(streamLink, null, QRGContents.Type.TEXT, 300);
         Bitmap bitmap;
         ImageView qrImage = findViewById(R.id.qrImage);
-        try{
+        try {
             bitmap = qrgEncoder.encodeAsBitmap();
             qrImage.setImageBitmap(bitmap);
-        }
-        catch (WriterException e){
+        } catch (WriterException e) {
             e.printStackTrace();
         }
     }
@@ -44,19 +46,30 @@ public class QRGeneratorActivity extends AppCompatActivity {
     private void getIntentInfo() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            serverUrl = bundle.getString("serverURL");
-            bundle.remove("serverURL");
+            isCaptainDevice = bundle.getBoolean("isCaptainDevice");
+            bundle.remove("isCaptainDevice");
             streamUrl = bundle.getString("streamURL");
             bundle.remove("streamURL");
-            team = (Team) bundle.get("team");
-            bundle.remove("team");
 
-            captainMode = bundle.getBoolean("captainMode");
-            bundle.remove("captainMode");
+            if (isCaptainDevice) {
+                serverUrl = bundle.getString("serverURL");
+                bundle.remove("serverURL");
+                team = (Team) bundle.get("team");
+                bundle.remove("team");
+            }
         }
     }
 
-    private void navigateToVideoPlayerActivity(){
-        //TODO add navigation logic
+    private void navigateToVideoPlayerActivity() {
+        Intent intent = new Intent(this, MediaPlayerActivity.class);
+        intent.putExtra("streamURL", streamUrl);
+        intent.putExtra("isCaptainDevice", isCaptainDevice);
+
+        if (isCaptainDevice) {
+            intent.putExtra("serverURL", serverUrl);
+            intent.putExtra("team", team);
+        }
+
+        startActivity(intent);
     }
 }
