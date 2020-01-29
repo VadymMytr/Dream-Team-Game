@@ -87,7 +87,7 @@ public class QRScannerActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         decodeQR(result.getText());
-                        new SendStreamUrlRequest().execute();
+//                        new SendStreamUrlRequest().execute();
                     }
                 });
             }
@@ -103,11 +103,14 @@ public class QRScannerActivity extends AppCompatActivity {
 
 
     private void decodeQR(String qrText){
+        //captain device:
+
         //<server_url>|<team_token>
         String[] resultParts = qrText.split("\\|");
-        serverURL = resultParts[0];
-        team = new Team(resultParts[1], "");
+        serverURL = "http://10.177.1.16:8080";
+        team = new Team("z", "");
         api = new Api(serverURL);
+        navigateToStreamActivity(new StreamUrl("rtmp://10.177.1.26/hls"));
     }
 
     private void navigateToStreamActivity(StreamUrl streamURL) {

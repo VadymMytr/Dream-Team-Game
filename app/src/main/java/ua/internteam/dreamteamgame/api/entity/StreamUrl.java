@@ -6,4 +6,8 @@ public class StreamUrl {
     public String getUrl() {
         return url;
     }
+
+    public StreamUrl(String url){
+        this.url = url;
+    }
 }
