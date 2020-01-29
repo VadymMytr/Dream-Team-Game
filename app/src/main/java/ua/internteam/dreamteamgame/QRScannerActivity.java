@@ -28,8 +28,10 @@ import ua.internteam.dreamteamgame.api.entity.Team;
 public class QRScannerActivity extends AppCompatActivity {
     private Activity activity = this;
     private CodeScanner mCodeScanner;
-    private Api api;
 
+    private Boolean isCaptainDevice;
+
+    private Api api;
     private String serverURL;
     private Team team;
 
@@ -86,8 +88,9 @@ public class QRScannerActivity extends AppCompatActivity {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        decodeQR(result.getText());
-//                        new SendStreamUrlRequest().execute();
+                        String qrText = result.getText();
+                        setIsCaptainDevice(qrText);
+                        decodeQR(qrText);
                     }
                 });
             }
@@ -101,24 +104,44 @@ public class QRScannerActivity extends AppCompatActivity {
         });
     }
 
+    private void setIsCaptainDevice(String qrText){
+    //check for captain mode
+        if(qrText.contains("http")) //captain has server link
+            isCaptainDevice = true;
+        else if(qrText.contains("rtmp")) //player has stream link
+            isCaptainDevice = false;
+        else
+            isCaptainDevice = null;
+    }
 
     private void decodeQR(String qrText){
         //captain device:
-
-        //<server_url>|<team_token>
-        String[] resultParts = qrText.split("\\|");
-        serverURL = "http://10.177.1.16:8080";
-        team = new Team("z", "");
-        api = new Api(serverURL);
-        navigateToStreamActivity(new StreamUrl("rtmp://10.177.1.26/hls"));
+        if(isCaptainDevice) {
+            //<server_url>|<team_token>
+            String[] resultParts = qrText.split("\\|");
+            serverURL = resultParts[0];
+            team = new Team(resultParts[1]);
+            api = new Api(serverURL);
+            new SendStreamUrlRequest().execute();
+        }
+        //player device:
+        else
+            //<stream_url>
+            navigateToQRCodeShareActivity(new StreamUrl(qrText));
     }
 
-    private void navigateToStreamActivity(StreamUrl streamURL) {
+    private void navigateToQRCodeShareActivity(StreamUrl streamURL) {
         Intent intent;
         intent = new Intent(activity, MediaPlayerActivity.class);
-        intent.putExtra("serverURL", serverURL);
         intent.putExtra("streamURL", streamURL.getUrl());
-        intent.putExtra("team", team);
+        intent.putExtra("isCaptainDevice", isCaptainDevice);
+
+        //captain also have to put serverURL and team info
+        if(isCaptainDevice) {
+            intent.putExtra("serverURL", serverURL);
+            intent.putExtra("team", team);
+        }
+
         startActivity(intent);
     }
 
@@ -136,7 +159,7 @@ public class QRScannerActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(StreamUrl streamUrl) {
             if (streamUrl != null)
-                navigateToStreamActivity(streamUrl);
+                navigateToQRCodeShareActivity(streamUrl);
         }
     }
 }

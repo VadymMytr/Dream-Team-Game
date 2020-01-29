@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickM() {
-  Intent intent = new Intent(this, QRGeneratorActivity.class);
+        Intent intent = new Intent(this, QRGeneratorActivity.class);
         startActivity(intent);
     }
 
