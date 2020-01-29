@@ -1,21 +1,14 @@
 package ua.internteam.dreamteamgame;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.IOException;
-
-import ua.internteam.dreamteamgame.api.Api;
-import ua.internteam.dreamteamgame.api.entity.Answer;
-import ua.internteam.dreamteamgame.api.entity.StreamUrl;
-import ua.internteam.dreamteamgame.api.entity.Team;
+import ua.internteam.dreamteamgame.QRCode.QRGeneratorActivity;
+import ua.internteam.dreamteamgame.QRCode.QRScannerActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -35,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickM() {
-        Intent intent = new Intent(this, QRGeneratorActivity.class);
+        Intent intent = new Intent(this, QRScannerActivity.class);
         startActivity(intent);
     }
 

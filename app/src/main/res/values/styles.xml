@@ -12,4 +12,10 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <style name="RoundedCornerButton" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="background">@drawable/button_rounded_corners</item>
+        <item name="colorButtonNormal">#DD0000</item>
+        <item name="colorControlHighlight">#673ab7</item>
+    </style>
+
 </resources>

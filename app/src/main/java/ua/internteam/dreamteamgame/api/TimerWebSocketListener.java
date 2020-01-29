@@ -4,7 +4,7 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-public class EchoWebSocketListener extends WebSocketListener {
+public class TimerWebSocketListener extends WebSocketListener {
 
     private static final int NORMAL_CLOSURE_STATUS = 1000;
     @Override
@@ -14,7 +14,7 @@ public class EchoWebSocketListener extends WebSocketListener {
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
-        //TODO change logic
+        //TODO add timer logic
         System.out.println(text);
     }
 

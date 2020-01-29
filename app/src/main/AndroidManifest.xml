@@ -35,16 +35,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".QRScannerActivity"
+            android:name=".QRCode.QRScannerActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
 
         <activity
-            android:name=".QRGeneratorActivity"
+            android:name=".QRCode.QRGeneratorActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
     </application>
 

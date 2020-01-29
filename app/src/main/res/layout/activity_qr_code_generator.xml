@@ -1,13 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/qrImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="292dp"
+        android:layout_height="252dp"
+        android:foregroundGravity="center"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.635"
         tools:srcCompat="@tools:sample/avatars" />
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="545dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/comfortaa"
+        android:soundEffectsEnabled="false"
+        android:text="@string/shareQR"
+        android:textColor="@color/black_overlay"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toTopOf="@+id/qrImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        style="@style/RoundedCornerButton"
+        android:layout_width="149dp"
+        android:layout_height="61dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_rounded_corners"
+        android:fontFamily="@font/comfortaa"
+        android:outlineProvider="none"
+        android:text="@string/startGame"
+        android:textColor="@color/black_overlay"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintStart_toStartOf="@+id/qrImage" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package ua.internteam.dreamteamgame;
+package ua.internteam.dreamteamgame.QRCode;
 
 import android.Manifest;
 import android.app.Activity;
@@ -21,6 +21,8 @@ import com.google.zxing.Result;
 
 import java.io.IOException;
 
+import ua.internteam.dreamteamgame.MediaPlayerActivity;
+import ua.internteam.dreamteamgame.R;
 import ua.internteam.dreamteamgame.api.Api;
 import ua.internteam.dreamteamgame.api.entity.StreamUrl;
 import ua.internteam.dreamteamgame.api.entity.Team;

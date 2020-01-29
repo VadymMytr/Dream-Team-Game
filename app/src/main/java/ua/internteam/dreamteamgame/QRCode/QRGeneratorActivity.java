@@ -1,4 +1,4 @@
-package ua.internteam.dreamteamgame;
+package ua.internteam.dreamteamgame.QRCode;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +11,8 @@ import com.google.zxing.WriterException;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import ua.internteam.dreamteamgame.MediaPlayerActivity;
+import ua.internteam.dreamteamgame.R;
 import ua.internteam.dreamteamgame.api.entity.Team;
 
 public class QRGeneratorActivity extends AppCompatActivity {
