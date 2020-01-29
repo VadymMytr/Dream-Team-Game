@@ -19,22 +19,23 @@ import java.io.IOException;
 import static com.google.android.exoplayer2.ExoPlayerLibraryInfo.TAG;
 
 public class MediaPlayerSource {
-//source factory
+    //source factory
     private DataSource.Factory rtmpDataSourceFactory;
 
-//media source
+    //media source
     private MediaSource mediaSource;
+
     public MediaSource getMediaSource() {
         return mediaSource;
     }
 
-    private MediaPlayerSource(){
+    private MediaPlayerSource() {
         rtmpDataSourceFactory = new RtmpDataSourceFactory();
     }
 
-    public MediaPlayerSource(String uriPath){
+    public MediaPlayerSource(String uriPath) {
         this();
-            mediaSource = new ProgressiveMediaSource.Factory(rtmpDataSourceFactory)
-                                .createMediaSource(Uri.parse(uriPath));
+        mediaSource = new ProgressiveMediaSource.Factory(rtmpDataSourceFactory)
+                .createMediaSource(Uri.parse(uriPath));
     }
 }

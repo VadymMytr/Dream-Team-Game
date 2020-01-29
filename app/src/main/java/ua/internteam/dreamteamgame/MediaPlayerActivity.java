@@ -33,21 +33,20 @@ import ua.internteam.dreamteamgame.api.entity.Answer;
 import ua.internteam.dreamteamgame.api.entity.Team;
 
 public class MediaPlayerActivity extends AppCompatActivity {
-    private Api api;
-    private Team team;
+    private Boolean isCaptainDevice;
+    private String streamUrl;
 
     private PlayerView playerView;
     private SimpleExoPlayer player;
     private MediaSource videoSource;
     private ImageView saver;
 
-    private TimeoutBar timeoutBar;
-
-    private String streamUrl;
     private String serverUrl;
-
-    private EditText answerField;
+    private Api api;
+    private Team team;
     private Answer answer;
+    private EditText answerField;
+    private TimeoutBar timeoutBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +54,23 @@ public class MediaPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_media_player);
         saver = findViewById(R.id.imageView);
         playerView = findViewById(R.id.simple_player);
-        timeoutBar = new TimeoutBar(findViewById(R.id.timeoutBar));
-        answerField = findViewById(R.id.answerET);
-//        api = new Api(serverUrl);
-        setStyle();
 
         getIntentInfo();
 
+        if (isCaptainDevice) {
+            timeoutBar = new TimeoutBar(findViewById(R.id.timeoutBar));
+            answerField = findViewById(R.id.answerET);
+            api = new Api(serverUrl);
+        }
+
+        setStyle();
         initializePlayer();
-        initializeTimeoutBar(10);
+
+        if (isCaptainDevice) {
+            //TODO connect to websocket with timer
+        }
     }
+
 
     @Override
     public void onBackPressed() {
@@ -95,12 +101,17 @@ public class MediaPlayerActivity extends AppCompatActivity {
     private void getIntentInfo() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            serverUrl = bundle.getString("serverURL");
-            bundle.remove("serverURL");
+            isCaptainDevice = bundle.getBoolean("isCaptainDevice");
+            bundle.remove("isCaptainDevice");
             streamUrl = bundle.getString("streamURL");
             bundle.remove("streamURL");
-            team = (Team) bundle.get("team");
-            bundle.remove("team");
+
+            if (isCaptainDevice) {
+                serverUrl = bundle.getString("serverURL");
+                bundle.remove("serverURL");
+                team = (Team) bundle.get("team");
+                bundle.remove("team");
+            }
         }
     }
 

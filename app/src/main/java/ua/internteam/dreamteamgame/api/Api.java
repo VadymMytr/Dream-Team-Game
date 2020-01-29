@@ -21,14 +21,14 @@ public class Api {
     private String webSocketUrl;
     private Gson gson;
 
-//    private final EchoWebSocketListener listener;
+//    private final TimerWebSocketListener listener;
 //    private final WebSocket webSocket;
 
     public Api(String serverUrl) {
         this.client = new OkHttpClient();
         this.webSocketUrl = serverUrl;
 
-//        listener = new EchoWebSocketListener();
+//        listener = new TimerWebSocketListener();
 //        webSocket = client.newWebSocket(request, listener);
         this.gson = new Gson();
     }
