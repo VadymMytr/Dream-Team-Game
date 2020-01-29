@@ -3,7 +3,6 @@
     <string name="app_name">DreamTeamGame</string>
     <string name="answer">Відповідь</string>
     <string name="send">Відправити</string>
-    <string name="info">інфа</string>
-    <string name="hello">Dream Team Game</string>
-    <string name="tab">Натисни</string>
+    <string name="hello">Вітаємо у грі\nDreamTeam_Game</string>
+    <string name="tab">Ознайомитися з\n правилами</string>
 </resources>
