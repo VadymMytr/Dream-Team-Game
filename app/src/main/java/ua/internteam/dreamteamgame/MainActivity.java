@@ -14,7 +14,9 @@ import java.io.IOException;
 
 import ua.internteam.dreamteamgame.api.Api;
 import ua.internteam.dreamteamgame.api.entity.Answer;
+import ua.internteam.dreamteamgame.api.entity.StreamUrl;
 import ua.internteam.dreamteamgame.api.entity.Team;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
   Intent intent = new Intent(this, QRScannerActivity.class);
         startActivity(intent);
     }
-
 
 }
 

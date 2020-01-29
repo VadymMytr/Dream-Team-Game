@@ -25,6 +25,8 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ua.internteam.dreamteamgame.api.Api;
 import ua.internteam.dreamteamgame.api.entity.Answer;
@@ -55,13 +57,13 @@ public class MediaPlayerActivity extends AppCompatActivity {
         playerView = findViewById(R.id.simple_player);
         timeoutBar = new TimeoutBar(findViewById(R.id.timeoutBar));
         answerField = findViewById(R.id.answerET);
-        api = new Api(serverUrl);
+//        api = new Api(serverUrl);
         setStyle();
 
         getIntentInfo();
 
         initializePlayer();
-//        initializeTimeoutBar(10);
+        initializeTimeoutBar(10);
     }
 
     @Override
@@ -104,9 +106,12 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
 
     private void sendAnswer() {
-        answer = new Answer(team,
-                answerField.getText().toString());
-
+        String answerText = answerField.getText().toString();
+        Pattern answerPattern = Pattern.compile("[^a-zA-z0-9]");
+        Matcher matcher = answerPattern.matcher(answerText);
+        answerText = matcher.replaceAll("");
+        answer = new Answer(team, answerText);
+        System.out.println(answerText);
         answerField.setText("");
         //TODO send answer
 //        new SendAnswerTask().execute();
@@ -149,6 +154,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
                     View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
+
     private void changeAnswerFieldVisibility(int visibility) {
         answerField.setVisibility(visibility);
     }
