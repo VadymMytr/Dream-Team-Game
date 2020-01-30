@@ -8,4 +8,8 @@
     <string name="tab">Натисни</string>
     <string name="shareQR">Поділись QR кодом</string>
     <string name="startGame">Почати гру</string>
+    <string name="scanQR">Сканувати</string>
+    <string name="captainBeforeQRMessage">Підійди до оператора та назви кодове слово\n\nЗіскануй Qr-code</string>
+    <string name="playerBeforeQRMessage">Зіскануй QR-code у друга</string>
+
 </resources>
