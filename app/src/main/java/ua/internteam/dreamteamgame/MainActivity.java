@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button btn = (Button) findViewById(R.id.setIP);
+        Button btn = (Button) findViewById(R.id.button);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickM() {
+        //TODO navigate to rules activity
         Intent intent = new Intent(this, QRScannerActivity.class);
         startActivity(intent);
     }

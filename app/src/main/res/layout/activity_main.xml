@@ -13,29 +13,28 @@
         android:layout_height="207dp"
         android:layout_marginStart="300dp"
         android:layout_marginEnd="41dp"
+        android:layout_marginBottom="92dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.764"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/photo1"
-        tools:layout_editor_absoluteY="141dp" />
+        app:srcCompat="@drawable/photo1" />
 
     <Button
 
         android:id="@+id/button"
         style="@style/RoundedCornerButton"
-        android:layout_width="238dp"
-        android:layout_height="78dp"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="380dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="349dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="44dp"
+        android:background="@drawable/button_rounded_corners"
         android:fontFamily="@font/comfortaa"
         android:text="@string/tab"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.346"
+        app:layout_constraintHorizontal_bias="0.277"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
@@ -54,9 +53,9 @@
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.36"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.004" />
+        app:layout_constraintVertical_bias="0.005" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
