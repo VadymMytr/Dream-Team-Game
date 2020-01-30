@@ -5,4 +5,12 @@
     <string name="send">Відправити</string>
     <string name="hello">Вітаємо у грі\nDreamTeam_Game</string>
     <string name="tab">Ознайомитися з\n правилами</string>
+    <string name="rule">Правила користування додатком</string>
+    <string name="rule1">Привіт, ти маєш дотримуватись деяких правил, а саме:\n
+1. при переході в інший додаток під час гри оператор\n
+про це дізнається (так що підглянути у гуглі не вийде ;))\n
+2. відповідь приймається лише одна від однієї команди</string>
+    <string name="check_info">Ознайомився(лась) з правилами </string>
+    <string name="leader"> Я Капітан </string>
+    <string name="gamer">Я гравець</string>
 </resources>
