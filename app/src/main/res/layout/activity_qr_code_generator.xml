@@ -44,7 +44,7 @@
         android:fontFamily="@font/comfortaa"
         android:outlineProvider="none"
         android:text="@string/startGame"
-        android:textColor="@color/black_overlay"
+        android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

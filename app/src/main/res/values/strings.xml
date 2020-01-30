@@ -3,6 +3,14 @@
     <string name="app_name">DreamTeamGame</string>
     <string name="answer">Відповідь</string>
     <string name="send">Відправити</string>
+    <string name="info">інфа</string>
+    <string name="hello">Dream Team Game</string>
+    <string name="tab">Натисни</string>
+    <string name="shareQR">Поділись QR кодом</string>
+    <string name="startGame">Почати гру</string>
+    <string name="scanQR">Сканувати</string>
+    <string name="captainBeforeQRMessage">Підійди до оператора та назви кодове слово\n\nЗіскануй Qr-code</string>
+    <string name="playerBeforeQRMessage">Зіскануй QR-code у друга</string>
     <string name="hello">Вітаємо у грі\nDreamTeam_Game</string>
     <string name="tab">Ознайомитися з\n правилами</string>
 </resources>
