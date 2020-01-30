@@ -46,7 +46,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     private Team team;
     private Answer answer;
     private EditText answerField;
-    private TimeoutBar timeoutBar;
+    private static TimeoutBar timeoutBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,19 +100,24 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
     private void getIntentInfo() {
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            isCaptainDevice = bundle.getBoolean("isCaptainDevice");
-            bundle.remove("isCaptainDevice");
-            streamUrl = bundle.getString("streamURL");
-            bundle.remove("streamURL");
-
-            if (isCaptainDevice) {
-                serverUrl = bundle.getString("serverURL");
-                bundle.remove("serverURL");
-                team = (Team) bundle.get("team");
-                bundle.remove("team");
-            }
-        }
+//        if (bundle != null) {
+//            isCaptainDevice = bundle.getBoolean("isCaptainDevice");
+//            bundle.remove("isCaptainDevice");
+//            streamUrl = bundle.getString("streamURL");
+//            bundle.remove("streamURL");
+//
+//            if (isCaptainDevice) {
+//                serverUrl = bundle.getString("serverURL");
+//                bundle.remove("serverURL");
+//                team = (Team) bundle.get("team");
+//                bundle.remove("team");
+//            }
+//        }
+        isCaptainDevice = true;
+        streamUrl = "rtmp://10.177.1.26/hls";
+//        serverUrl = "ws://10.177.1.16:8080";
+        serverUrl = "http://10.177.1.16:8080";
+        team = new Team("afsa");
     }
 
 
@@ -121,7 +126,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
         Pattern answerPattern = Pattern.compile("[^a-zA-z0-9]");
         Matcher matcher = answerPattern.matcher(answerText);
         answerText = matcher.replaceAll("");
-        answer = new Answer(team, answerText);
+        answer = new Answer(team.getToken(), answerText);
         System.out.println(answerText);
         answerField.setText("");
         //TODO send answer
@@ -133,6 +138,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
         playerView.setPlayer(player);
         videoSource = new MediaPlayerSource(streamUrl).getMediaSource();
         player.setPlayWhenReady(true);
+        player.prepare(videoSource);
         player.addListener(new Player.EventListener() {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
@@ -146,11 +152,9 @@ public class MediaPlayerActivity extends AppCompatActivity {
                     saver.setVisibility(View.GONE);
             }
         });
-
-        player.prepare(videoSource);
     }
 
-    private void initializeTimeoutBar(int time) {
+    public static void initializeTimeoutBar(int time) {
         timeoutBar.initialize(time);
     }
 
@@ -175,38 +179,48 @@ public class MediaPlayerActivity extends AppCompatActivity {
         private Integer answerTimeout;
         private ProgressBar progressBar;
 
-        public void initialize(int time) {
-            //Calls when answers must be send
-            progressBar.setMax(time);
-            answerTimeout = time;
+        public void initialize(int timeInSecond) {
+            //seconds * 50
 
-            changeAnswerFieldVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
+            //Calls when answers must be send
+            progressBar.setMax(timeInSecond * 50);
+            answerTimeout = timeInSecond * 50;
+            timer = new Timer();
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    answerField.setEnabled(true);
+                    progressBar.setVisibility(View.VISIBLE);
+                    changeAnswerFieldVisibility(View.VISIBLE);
+                }
+            });
 
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (answerTimeout < 0) {
+                    if (answerTimeout <= 0) {
                         timer.cancel();
                         //change visibility
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                answerField.setEnabled(false);
                                 progressBar.setVisibility(View.GONE);
                                 changeAnswerFieldVisibility(View.GONE);
                             }
                         });
-                        sendAnswer();
-                    } else
+//                        sendAnswer();
+                    } else {
                         progressBar.setProgress(answerTimeout);
-
-                    answerTimeout--;
+                        answerTimeout--;
+                    }
+                    System.out.println(answerTimeout);
                 }
-            }, 0, 1000);
+            }, 0, 20);
         }
 
         public TimeoutBar(ProgressBar progressBar) {
-            timer = new Timer();
             this.progressBar = progressBar;
             answerTimeout = progressBar.getMax();
         }

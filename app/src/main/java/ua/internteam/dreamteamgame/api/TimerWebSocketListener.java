@@ -1,12 +1,16 @@
 package ua.internteam.dreamteamgame.api;
 
+import android.content.Intent;
+
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
+import ua.internteam.dreamteamgame.MediaPlayerActivity;
 
 public class TimerWebSocketListener extends WebSocketListener {
 
     private static final int NORMAL_CLOSURE_STATUS = 1000;
+
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
         super.onOpen(webSocket, response);
@@ -14,8 +18,7 @@ public class TimerWebSocketListener extends WebSocketListener {
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
-        //TODO add timer logic
-        System.out.println(text);
+        MediaPlayerActivity.initializeTimeoutBar(Integer.parseInt(text));
     }
 
     @Override

@@ -36,12 +36,13 @@
 
     <Button
         android:id="@+id/scanQR2"
-        style="@style/RoundedCornerButton"
+        style="@android:style/Widget.Button"
         android:layout_width="406dp"
         android:layout_height="66dp"
         android:background="@drawable/button_rounded_corners"
         android:fontFamily="@font/comfortaa"
         android:text="@string/scanQR"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

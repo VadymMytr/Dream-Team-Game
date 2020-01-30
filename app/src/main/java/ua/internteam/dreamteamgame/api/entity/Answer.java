@@ -2,16 +2,14 @@ package ua.internteam.dreamteamgame.api.entity;
 
 public class Answer {
     private int id;
-    private Team team;
+    private String teamToken;
     private String text;
 
-    public Answer(Team team, String text){
-        this.team = team;
+    public Answer(String teamToken, String text){
         this.text = text;
     }
 
-    public Answer(int id, Team team, String text) {
-        this(team, text);
+    public Answer(int id, String teamToken, String text) {
         this.id = id;
     }
 
@@ -30,13 +28,5 @@ public class Answer {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
     }
 }

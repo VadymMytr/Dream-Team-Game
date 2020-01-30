@@ -21,15 +21,18 @@ public class Api {
     private String webSocketUrl;
     private Gson gson;
 
-//    private final TimerWebSocketListener listener;
-//    private final WebSocket webSocket;
+    private final TimerWebSocketListener listener;
+    private final WebSocket webSocket;
 
     public Api(String serverUrl) {
         this.client = new OkHttpClient();
         this.webSocketUrl = serverUrl;
 
-//        listener = new TimerWebSocketListener();
-//        webSocket = client.newWebSocket(request, listener);
+        Request request = new Request.Builder()
+                .url(webSocketUrl + "/timer")
+                .build();
+        listener = new TimerWebSocketListener();
+        webSocket = client.newWebSocket(request, listener);
         this.gson = new Gson();
     }
 
