@@ -11,11 +11,11 @@
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
     </style>
-
     <style name="RoundedCornerButton" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="background">@drawable/button_rounded_corners</item>
-        <item name="colorButtonNormal">#DD0000</item>
+        <item name="background">@drawable/btn_rounded_corner</item>
+        <item name="colorButtonNormal">#1a237e</item>
         <item name="colorControlHighlight">#673ab7</item>
     </style>
 
+    <drawable name="btn_rounded_corner">button</drawable>
 </resources>

@@ -11,5 +11,6 @@
     <string name="scanQR">Сканувати</string>
     <string name="captainBeforeQRMessage">Підійди до оператора та назви кодове слово\n\nЗіскануй Qr-code</string>
     <string name="playerBeforeQRMessage">Зіскануй QR-code у друга</string>
-
+    <string name="hello">Вітаємо у грі\nDreamTeam_Game</string>
+    <string name="tab">Ознайомитися з\n правилами</string>
 </resources>
