@@ -6,8 +6,7 @@ public class Answer {
     private String teamToken;
     private String text;
 
-    public Answer(int id, int number, String teamToken, String text) {
-        this.id = id;
+    public Answer(int number, String teamToken, String text) {
         this.teamToken = teamToken;
         this.number = number;
         this.text = text;

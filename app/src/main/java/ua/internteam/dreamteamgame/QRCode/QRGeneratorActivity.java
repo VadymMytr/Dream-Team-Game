@@ -3,6 +3,8 @@ package ua.internteam.dreamteamgame.QRCode;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,7 @@ public class QRGeneratorActivity extends AppCompatActivity {
     Boolean isCaptainDevice;
     String streamUrl;
 
+    String webSocketUrl;
     String serverUrl;
     Team team;
 
@@ -30,7 +33,13 @@ public class QRGeneratorActivity extends AppCompatActivity {
         getIntentInfo();
         generateQr(streamUrl);
         //TODO add button and navigation to next activity on click
-//        navigateToVideoPlayerActivity();
+        Button streamBtn = findViewById(R.id.StreamBtn);
+        streamBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToVideoPlayerActivity();
+            }
+        });
     }
 
     private void generateQr(String streamLink) {
@@ -56,6 +65,8 @@ public class QRGeneratorActivity extends AppCompatActivity {
             if (isCaptainDevice) {
                 serverUrl = bundle.getString("serverURL");
                 bundle.remove("serverURL");
+                webSocketUrl = bundle.getString("websocketURL");
+                bundle.remove("websocketURL");
                 team = (Team) bundle.get("team");
                 bundle.remove("team");
             }
@@ -68,6 +79,7 @@ public class QRGeneratorActivity extends AppCompatActivity {
         intent.putExtra("isCaptainDevice", isCaptainDevice);
 
         if (isCaptainDevice) {
+            intent.putExtra("websocketURL", webSocketUrl);
             intent.putExtra("serverURL", serverUrl);
             intent.putExtra("team", team);
         }

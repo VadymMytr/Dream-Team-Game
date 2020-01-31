@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button btn = (Button) findViewById(R.id.button);
+        Button btn = (Button) findViewById(R.id.StreamBtn);
 
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     void onClickM() {
         //navigate to rules activity
-        Intent intent = new Intent(this, MediaPlayerActivity.class);
+        Intent intent = new Intent(this, RulesActivity.class);
         startActivity(intent);
     }
 

@@ -2,7 +2,6 @@ package ua.internteam.dreamteamgame;
 
 import android.annotation.SuppressLint;
 
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -27,7 +26,6 @@ import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ua.internteam.dreamteamgame.api.Api;
 import ua.internteam.dreamteamgame.api.WebSockets.AnswerWebSocket;
 import ua.internteam.dreamteamgame.api.WebSockets.TimerWebSocket;
 import ua.internteam.dreamteamgame.api.entity.Answer;
@@ -36,55 +34,46 @@ import ua.internteam.dreamteamgame.api.entity.Team;
 public class MediaPlayerActivity extends AppCompatActivity {
     private Boolean isCaptainDevice;
 
-    private Api api;
     private Team team;
 
     private PlayerView playerView;
     private SimpleExoPlayer player;
     private MediaSource videoSource;
-    private ImageView saver;
-
-    private static TimeoutBar timeoutBar;
+    private ImageView waitingImage;
 
     private String streamUrl;
-    private String serverUrl;
 
+    private String serverUrl;
+    private String webSocketUrl;
+    private static TimeoutBar timeoutBar;
     private EditText answerField;
     private Answer answer;
     private AnswerWebSocket answerWebSocket;
 
 
+    private int counter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_player);
-        saver = findViewById(R.id.imageView);
+        waitingImage = findViewById(R.id.imageView);
         playerView = findViewById(R.id.simple_player);
+
+        counter = 1;
 
         getIntentInfo();
 
         if (isCaptainDevice) {
             timeoutBar = new TimeoutBar(findViewById(R.id.timeoutBar));
             answerField = findViewById(R.id.answerET);
-            api = new Api(serverUrl);
+
+            answerWebSocket = new AnswerWebSocket(webSocketUrl);
+            TimerWebSocket timerWebSocket = new TimerWebSocket();
+            timerWebSocket.init(webSocketUrl);
         }
-
-        answerWebSocket = new AnswerWebSocket("ws://10.177.1.16:8080");
-        TimerWebSocket timerWebSocket = new TimerWebSocket();
-        timerWebSocket.init("ws://10.177.1.16:8080");
-
         setStyle();
-
         initializePlayer();
-
-        if (isCaptainDevice) {
-            //TODO connect to websocket with timer
-        }
-
-
-
     }
-
 
     @Override
     public void onBackPressed() {
@@ -94,7 +83,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-// anticheat toast
+        // anticheat toast
         Toast toast = Toast.makeText(this, "Порушення правил гри веде до покарання.", Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, 0);
         LinearLayout toastContainer = (LinearLayout) toast.getView();
@@ -102,7 +91,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
         attentionImage.setImageResource(R.drawable.attention1);
         toastContainer.addView(attentionImage, 0);
         toast.show();
-
         //TODO send info about cheating to operator
     }
 
@@ -113,36 +101,35 @@ public class MediaPlayerActivity extends AppCompatActivity {
     }
 
     private void getIntentInfo() {
-//        Bundle bundle = getIntent().getExtras();
-//        if (bundle != null) {
-//            isCaptainDevice = bundle.getBoolean("isCaptainDevice");
-//            bundle.remove("isCaptainDevice");
-//            streamUrl = bundle.getString("streamURL");
-//            bundle.remove("streamURL");
-//
-//            if (isCaptainDevice) {
-//                serverUrl = bundle.getString("serverURL");
-//                bundle.remove("serverURL");
-//                team = (Team) bundle.get("team");
-//                bundle.remove("team");
-//            }
-//        }
-        isCaptainDevice = true;
-        streamUrl = "rtmp://10.177.1.26/hls";
-        serverUrl = "";
-//        team = new Team("afsa");
-    }
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isCaptainDevice = bundle.getBoolean("isCaptainDevice");
+            bundle.remove("isCaptainDevice");
+            streamUrl = bundle.getString("streamURL");
+            bundle.remove("streamURL");
 
+            if (isCaptainDevice) {
+                serverUrl = bundle.getString("serverURL");
+                bundle.remove("serverURL");
+                webSocketUrl = bundle.getString("websocketURL");
+                bundle.remove("websocketURL");
+                team = (Team) bundle.get("team");
+                bundle.remove("team");
+            }
+        }
+    }
 
     private void sendAnswer() {
         String answerText = answerField.getText().toString();
         Pattern answerPattern = Pattern.compile("[^a-zA-z0-9]");
         Matcher matcher = answerPattern.matcher(answerText);
         answerText = matcher.replaceAll("");
-        answer = new Answer(222, 2, "Y1eoiKRKPQ", answerText);
+        if(answerText.length() >= 100)
+            answerText = answerText.substring(0, 100);
+
+        answer = new Answer(counter++, team.getToken(), answerText);
         System.out.println(answerText);
         answerField.setText("");
-        //TODO send answer
         answerWebSocket.sendAnswer(answer);
     }
 
@@ -161,7 +148,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
             @Override
             public void onIsPlayingChanged(EventTime eventTime, boolean isPlaying) {
                 if (isPlaying)
-                    saver.setVisibility(View.GONE);
+                    waitingImage.setVisibility(View.GONE);
             }
         });
 
@@ -226,12 +213,10 @@ public class MediaPlayerActivity extends AppCompatActivity {
                             }
                         });
 
-                    }
-                    else {
+                    } else {
                         progressBar.setProgress(answerTimeout);
                         answerTimeout--;
                     }
-                    System.out.println(answerTimeout);
                 }
             }, 0, 20);
         }

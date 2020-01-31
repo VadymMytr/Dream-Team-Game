@@ -35,6 +35,7 @@ public class QRScannerActivity extends AppCompatActivity {
 
     private Api api;
     private String serverURL;
+    private String webSocketURL;
     private Team team;
 
     @Override
@@ -122,7 +123,8 @@ public class QRScannerActivity extends AppCompatActivity {
             //<server_url>|<team_token>
             String[] resultParts = qrText.split("\\|");
             serverURL = resultParts[0];
-            team = new Team(resultParts[1], "");
+            webSocketURL = serverURL.replace("http", "ws");
+            team = new Team(resultParts[1]);
             api = new Api(serverURL);
             new SendStreamUrlRequest().execute();
         }
@@ -134,13 +136,14 @@ public class QRScannerActivity extends AppCompatActivity {
 
     private void navigateToQRCodeShareActivity(StreamUrl streamURL) {
         Intent intent;
-        intent = new Intent(activity, MediaPlayerActivity.class);
+        intent = new Intent(activity, QRGeneratorActivity.class);
         intent.putExtra("streamURL", streamURL.getUrl());
         intent.putExtra("isCaptainDevice", isCaptainDevice);
 
         //captain also have to put serverURL and team info
         if (isCaptainDevice) {
             intent.putExtra("serverURL", serverURL);
+            intent.putExtra("websocketURL", webSocketURL);
             intent.putExtra("team", team);
         }
 

@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:contentDescription="TODO"
         android:scaleType="centerCrop"
-        android:visibility="gone"
-        app:srcCompat="@drawable/dreamimage2" />
+        android:visibility="visible"
+        app:srcCompat="@drawable/logo" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

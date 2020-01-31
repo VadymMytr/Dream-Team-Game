@@ -28,14 +28,14 @@
         android:fontFamily="@font/comfortaa"
         android:soundEffectsEnabled="false"
         android:text="@string/shareQR"
-        android:textColor="@color/black_overlay"
+        android:textColor="@color/black"
         android:textSize="50sp"
         app:layout_constraintBottom_toTopOf="@+id/qrImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/StreamBtn"
         style="@android:style/Widget.Button"
         android:layout_width="149dp"
         android:layout_height="61dp"

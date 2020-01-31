@@ -7,9 +7,9 @@ public class Team implements Serializable {
     private String token;
     private String name;
 
-    public Team(String token, String name) {
+    public Team(String token) {
         this.token = token;
-        this.name = name;
+        this.name = "";
     }
 
     public void setToken(String token) {

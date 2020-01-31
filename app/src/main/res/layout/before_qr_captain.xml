@@ -9,31 +9,33 @@
     <Button
         android:id="@+id/scanQR"
         style="@android:style/Widget.Button"
-        android:layout_width="406dp"
-        android:layout_height="66dp"
+        android:layout_width="266dp"
+        android:layout_height="58dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/button_rounded_corners"
         android:fontFamily="@font/comfortaa"
         android:text="@string/scanQR"
         android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="449dp"
-        android:layout_height="137dp"
-        android:layout_marginBottom="96dp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/comfortaa"
+        android:scrollbarThumbHorizontal="@color/black"
         android:text="@string/captainBeforeQRMessage"
+        android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/scanQR"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView2"

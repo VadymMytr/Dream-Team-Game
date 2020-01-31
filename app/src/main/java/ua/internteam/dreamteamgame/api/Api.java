@@ -37,7 +37,6 @@ public class Api {
                 .build();
         Response response = client.newCall(request).execute();
         String streamUrl = response.body().string();
-        System.out.println(streamUrl);
         return gson.fromJson(streamUrl, StreamUrl.class);
     }
 
