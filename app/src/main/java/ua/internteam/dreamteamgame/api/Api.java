@@ -9,8 +9,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import okhttp3.WebSocket;
 import ua.internteam.dreamteamgame.api.entity.Answer;
 import ua.internteam.dreamteamgame.api.entity.StreamUrl;
 import ua.internteam.dreamteamgame.api.entity.Team;
@@ -18,32 +16,29 @@ import ua.internteam.dreamteamgame.api.entity.Team;
 public class Api {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient client;
-    private String webSocketUrl;
+    private String serverUrl;
     private Gson gson;
-
-    private final TimerWebSocketListener listener;
-    private final WebSocket webSocket;
+//
+//    private final TimerWebSocketListener listener;
+//    private final WebSocket webSocket;
 
     public Api(String serverUrl) {
         this.client = new OkHttpClient();
-        this.webSocketUrl = serverUrl;
+        this.serverUrl = serverUrl;
+        //TODO DELETE NAFIG
+//
 
-        Request request = new Request.Builder()
-                .url(webSocketUrl + "/timer")
-                .build();
-        listener = new TimerWebSocketListener();
-        webSocket = client.newWebSocket(request, listener);
         this.gson = new Gson();
     }
 
     public String getUrl() {
-        return webSocketUrl;
+        return serverUrl;
     }
 
     public Answer sendAnswer(Answer answer) throws IOException {
         RequestBody body = RequestBody.create(JSON, gson.toJson(answer));
         Request request = new Request.Builder()
-                .url(webSocketUrl + "/answer")
+                .url(serverUrl + "/answer")
                 .post(body)
                 .build();
         Response response = client.newCall(request).execute();
@@ -53,7 +48,7 @@ public class Api {
     public StreamUrl getStreamUrl(Team team) throws IOException {
         RequestBody body = RequestBody.create(JSON, gson.toJson(team));
         Request request = new Request.Builder()
-                .url(webSocketUrl + "/geturl")
+                .url(serverUrl + "/geturl")
                 .post(body)
                 .build();
         Response response = client.newCall(request).execute();
@@ -65,7 +60,7 @@ public class Api {
     public Team getTeam(Team team) throws IOException {
         RequestBody body = RequestBody.create(JSON, gson.toJson(team));
         Request request = new Request.Builder()
-                .url(webSocketUrl + "/getteam")
+                .url(serverUrl + "/getteam")
                 .post(body)
                 .build();
         Response response = client.newCall(request).execute();

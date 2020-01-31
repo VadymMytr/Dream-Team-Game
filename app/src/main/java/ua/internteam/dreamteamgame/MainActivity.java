@@ -7,8 +7,9 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import ua.internteam.dreamteamgame.QRCode.QRScannerActivity;
-import ua.internteam.dreamteamgame.api.Api;
+import ua.internteam.dreamteamgame.api.WebSockets.AnswerWebSocket;
+import ua.internteam.dreamteamgame.api.WebSockets.TimerWebSocket;
+import ua.internteam.dreamteamgame.api.entity.Answer;
 
 
 public class MainActivity extends AppCompatActivity {

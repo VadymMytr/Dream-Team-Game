@@ -22,31 +22,37 @@ import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ua.internteam.dreamteamgame.api.Api;
+import ua.internteam.dreamteamgame.api.WebSockets.AnswerWebSocket;
+import ua.internteam.dreamteamgame.api.WebSockets.TimerWebSocket;
 import ua.internteam.dreamteamgame.api.entity.Answer;
 import ua.internteam.dreamteamgame.api.entity.Team;
 
 public class MediaPlayerActivity extends AppCompatActivity {
     private Boolean isCaptainDevice;
-    private String streamUrl;
+
+    private Api api;
+    private Team team;
 
     private PlayerView playerView;
     private SimpleExoPlayer player;
     private MediaSource videoSource;
     private ImageView saver;
 
-    private String serverUrl;
-    private Api api;
-    private Team team;
-    private Answer answer;
-    private EditText answerField;
     private static TimeoutBar timeoutBar;
+
+    private String streamUrl;
+    private String serverUrl;
+
+    private EditText answerField;
+    private Answer answer;
+    private AnswerWebSocket answerWebSocket;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +69,20 @@ public class MediaPlayerActivity extends AppCompatActivity {
             api = new Api(serverUrl);
         }
 
+        answerWebSocket = new AnswerWebSocket("ws://10.177.1.16:8080");
+        TimerWebSocket timerWebSocket = new TimerWebSocket();
+        timerWebSocket.init("ws://10.177.1.16:8080");
+
         setStyle();
+
         initializePlayer();
 
         if (isCaptainDevice) {
             //TODO connect to websocket with timer
         }
+
+
+
     }
 
 
@@ -99,7 +113,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     }
 
     private void getIntentInfo() {
-        Bundle bundle = getIntent().getExtras();
+//        Bundle bundle = getIntent().getExtras();
 //        if (bundle != null) {
 //            isCaptainDevice = bundle.getBoolean("isCaptainDevice");
 //            bundle.remove("isCaptainDevice");
@@ -115,9 +129,8 @@ public class MediaPlayerActivity extends AppCompatActivity {
 //        }
         isCaptainDevice = true;
         streamUrl = "rtmp://10.177.1.26/hls";
-//        serverUrl = "ws://10.177.1.16:8080";
-        serverUrl = "http://10.177.1.16:8080";
-        team = new Team("afsa");
+        serverUrl = "";
+//        team = new Team("afsa");
     }
 
 
@@ -126,11 +139,11 @@ public class MediaPlayerActivity extends AppCompatActivity {
         Pattern answerPattern = Pattern.compile("[^a-zA-z0-9]");
         Matcher matcher = answerPattern.matcher(answerText);
         answerText = matcher.replaceAll("");
-        answer = new Answer(team.getToken(), answerText);
+        answer = new Answer(222, 2, "Y1eoiKRKPQ", answerText);
         System.out.println(answerText);
         answerField.setText("");
         //TODO send answer
-//        new SendAnswerTask().execute();
+        answerWebSocket.sendAnswer(answer);
     }
 
     private void initializePlayer() {
@@ -138,7 +151,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
         playerView.setPlayer(player);
         videoSource = new MediaPlayerSource(streamUrl).getMediaSource();
         player.setPlayWhenReady(true);
-        player.prepare(videoSource);
         player.addListener(new Player.EventListener() {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
@@ -152,6 +164,8 @@ public class MediaPlayerActivity extends AppCompatActivity {
                     saver.setVisibility(View.GONE);
             }
         });
+
+        player.prepare(videoSource);
     }
 
     public static void initializeTimeoutBar(int time) {
@@ -208,10 +222,12 @@ public class MediaPlayerActivity extends AppCompatActivity {
                                 answerField.setEnabled(false);
                                 progressBar.setVisibility(View.GONE);
                                 changeAnswerFieldVisibility(View.GONE);
+                                sendAnswer();
                             }
                         });
-//                        sendAnswer();
-                    } else {
+
+                    }
+                    else {
                         progressBar.setProgress(answerTimeout);
                         answerTimeout--;
                     }
@@ -223,25 +239,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
         public TimeoutBar(ProgressBar progressBar) {
             this.progressBar = progressBar;
             answerTimeout = progressBar.getMax();
-        }
-    }
-
-    class SendAnswerTask extends AsyncTask<Void, Integer, Answer> {
-        @Override
-        protected Answer doInBackground(Void... unused) {
-            try {
-                return api.sendAnswer(answer);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Answer answerResult) {
-            if (answerResult != null)
-                Toast.makeText(getApplicationContext(), "send: " + answerResult.getText(), Toast.LENGTH_SHORT)
-                        .show();
         }
     }
 }
