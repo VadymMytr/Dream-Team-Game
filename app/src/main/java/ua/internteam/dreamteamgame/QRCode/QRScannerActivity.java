@@ -122,7 +122,7 @@ public class QRScannerActivity extends AppCompatActivity {
             //<server_url>|<team_token>
             String[] resultParts = qrText.split("\\|");
             serverURL = resultParts[0];
-            team = new Team(resultParts[1]);
+            team = new Team(resultParts[1], "");
             api = new Api(serverURL);
             new SendStreamUrlRequest().execute();
         }

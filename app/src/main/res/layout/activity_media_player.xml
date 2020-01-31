@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.9"
-        android:background="@color/black">
+        android:background="#000000">
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/simple_player"
@@ -31,27 +31,23 @@
             android:layout_height="match_parent"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:background="@color/black"
+            android:background="#00000000"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-            app:use_controller="false" />
+            app:use_controller="false">
+
+        </com.google.android.exoplayer2.ui.PlayerView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <ProgressBar
-        android:id="@+id/timeoutBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="6dp"
-        android:visibility="gone" />
-
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/answerLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,11 +64,22 @@
             android:hint="@string/answer"
             android:inputType="textPersonName"
             android:textColor="@color/black"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:targetApi="o" />
 
+        <ProgressBar
+            android:id="@+id/timeoutBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="100"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 </LinearLayout>

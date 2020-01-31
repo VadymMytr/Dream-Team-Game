@@ -1,20 +1,18 @@
 package ua.internteam.dreamteamgame.api.entity;
 
 import java.io.Serializable;
-import java.time.temporal.Temporal;
 
 public class Team implements Serializable {
 
     private String token;
     private String name;
 
-    public Team() {
-        token = "";
-        name = "";
+    public Team(String token, String name) {
+        this.token = token;
+        this.name = name;
     }
 
-    public Team(String token) {
-        this();
+    public void setToken(String token) {
         this.token = token;
     }
 
@@ -30,4 +28,11 @@ public class Team implements Serializable {
         return token;
     }
 
+    @Override
+    public String toString() {
+        return "Team{" +
+                "token='" + token + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
