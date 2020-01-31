@@ -18,31 +18,15 @@ public class Api {
     private OkHttpClient client;
     private String serverUrl;
     private Gson gson;
-//
-//    private final TimerWebSocketListener listener;
-//    private final WebSocket webSocket;
 
     public Api(String serverUrl) {
         this.client = new OkHttpClient();
         this.serverUrl = serverUrl;
-        //TODO DELETE NAFIG
-//
-
         this.gson = new Gson();
     }
 
     public String getUrl() {
         return serverUrl;
-    }
-
-    public Answer sendAnswer(Answer answer) throws IOException {
-        RequestBody body = RequestBody.create(JSON, gson.toJson(answer));
-        Request request = new Request.Builder()
-                .url(serverUrl + "/answer")
-                .post(body)
-                .build();
-        Response response = client.newCall(request).execute();
-        return gson.fromJson(response.body().string(), Answer.class);
     }
 
     public StreamUrl getStreamUrl(Team team) throws IOException {
@@ -66,16 +50,4 @@ public class Api {
         Response response = client.newCall(request).execute();
         return gson.fromJson(response.body().string(), Team.class);
     }
-
-//    String doGetRequest(String url) throws IOException {
-//        Request request = new Request.Builder()
-//                .url(url)
-//                .build();
-//
-//        Response response = client.newCall(request).execute();
-//        return response.body().string();
-
-//    }
-
-
 }

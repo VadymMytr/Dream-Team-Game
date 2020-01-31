@@ -7,39 +7,46 @@
 
     <Button
         android:id="@+id/button2"
-        style="@style/RoundedCornerButton"
+        style="@android:style/Widget.Button"
         android:layout_width="115dp"
-        android:layout_height="57dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="@drawable/button_rounded_corners"
+        android:fontFamily="@font/comfortaa"
         android:text="@string/leader"
-        tools:layout_editor_absoluteX="505dp"
-        tools:layout_editor_absoluteY="295dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintStart_toEndOf="@+id/checkBox"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox"
+        app:layout_constraintVertical_bias="0.504" />
 
     <Button
         android:id="@+id/button3"
-        style="@style/RoundedCornerButton"
-        android:layout_width="113dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="276dp"
+        style="@android:style/Widget.Button"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="@drawable/button_rounded_corners"
+        android:fontFamily="@font/comfortaa"
         android:text="@string/gamer"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
-        tools:layout_editor_absoluteY="296dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/checkBox"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="384dp"
         android:layout_height="27dp"
-        android:layout_marginEnd="172dp"
         android:layout_weight="1"
         android:fontFamily="@font/comfortaa"
         android:text="@string/rule"
         android:textColor="#1A1A1A"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="49dp" />
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView3"
@@ -50,8 +57,11 @@
         android:text="@string/rule1"
         android:textColor="#1A1A1A"
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="83dp"
-        tools:layout_editor_absoluteY="116dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.335" />
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -61,7 +71,10 @@
         android:fontFamily="@font/comfortaa"
         android:text="@string/check_info"
         android:textColor="#1A1A1A"
-        tools:layout_editor_absoluteX="214dp"
-        tools:layout_editor_absoluteY="234dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.166" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

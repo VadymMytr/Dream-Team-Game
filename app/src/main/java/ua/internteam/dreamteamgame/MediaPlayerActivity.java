@@ -88,7 +88,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "Неможлиово вийти назад", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Неможливо вийти назад", Toast.LENGTH_SHORT).show();
     }
 
     @Override
