@@ -60,6 +60,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
     private int counter;
     private final Activity context = this;
+    private Anticheat anticheat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
         isPlayingStream = false;
+        anticheat = new Anticheat(context);
         counter = 1;
 
         getIntentInfo();
@@ -95,13 +97,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         // anticheat toast
-        Toast toast = Toast.makeText(this, "Порушення правил гри веде до покарання.", Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        LinearLayout toastContainer = (LinearLayout) toast.getView();
-        ImageView attentionImage = new ImageView(getApplicationContext());
-        attentionImage.setImageResource(R.drawable.attention1);
-        toastContainer.addView(attentionImage, 0);
-        toast.show();
+        anticheat.showAttentionMessage();
         //TODO send info about cheating to operator
     }
 
@@ -161,6 +157,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
                 }
                 else if(isPlayingStream){
                     //TODO exit
+                    anticheat.setWorking(false);
                     Intent intent = new Intent(context, ExitActivity.class);
                     startActivity(intent);
                     finish();
@@ -241,6 +238,40 @@ public class MediaPlayerActivity extends AppCompatActivity {
         public TimeoutBar(ProgressBar progressBar) {
             this.progressBar = progressBar;
             answerTimeout = progressBar.getMax();
+        }
+    }
+    class Anticheat{
+        private Boolean working;
+        private Activity activity;
+
+        public Boolean getWorking() {
+            return working;
+        }
+
+        public void setWorking(Boolean working) {
+            this.working = working;
+        }
+
+        public Anticheat(Activity activity){
+            working = true;
+            this.activity = activity;
+        }
+
+        public void showAttentionMessage(){
+            if(working) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast toast = Toast.makeText(activity, "Порушення правил гри веде до покарання.", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        LinearLayout toastContainer = (LinearLayout) toast.getView();
+                        ImageView attentionImage = new ImageView(getApplicationContext());
+                        attentionImage.setImageResource(R.drawable.attention1);
+                        toastContainer.addView(attentionImage, 0);
+                        toast.show();
+                    }
+                });
+            }
         }
     }
 }
