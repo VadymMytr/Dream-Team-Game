@@ -1,33 +1,30 @@
-package ua.internteam.dreamteamgame.QRCode;
+package ua.internteam.dreamteamgame.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import ua.internteam.dreamteamgame.ActivityStyleHandler;
 import ua.internteam.dreamteamgame.R;
 
-public class BeforeQRCaptainActivity extends AppCompatActivity {
+public class ExitActivity extends AppCompatActivity {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.before_qr_captain);
+        setContentView(R.layout.activity_exit);
 
-        Activity currentActivity = this;
-        Button scanButton = findViewById(R.id.scanQR);
-        scanButton.setOnClickListener(v -> {
-            Intent nextIntent = new Intent(currentActivity, QRScannerActivity.class);
-            startActivity(nextIntent);
-            finish();
+        Button exitBtn = findViewById(R.id.exitBtn);
+        exitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAffinity();
+            }
         });
     }
-
 
     @SuppressLint("NewApi")
     @Override

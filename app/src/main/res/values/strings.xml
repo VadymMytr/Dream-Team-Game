@@ -3,6 +3,7 @@
     <string name="app_name">DreamTeamGame</string>
     <string name="answer">Відповідь</string>
     <string name="send">Відправити</string>
+    <string name="exit">Вийти</string>
     <string name="shareQR">Поділись QR кодом</string>
     <string name="startGame">Почати гру</string>
     <string name="scanQR">Сканувати</string>
@@ -18,4 +19,5 @@
     <string name="check_info">Ознайомився(лась) з правилами </string>
     <string name="leader"> Я Капітан </string>
     <string name="gamer">Я гравець</string>
+    <string name="exitMsg">Дякую за гру!</string>
 </resources>

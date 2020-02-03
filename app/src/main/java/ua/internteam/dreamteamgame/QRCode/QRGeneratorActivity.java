@@ -87,6 +87,7 @@ public class QRGeneratorActivity extends AppCompatActivity {
         }
 
         startActivity(intent);
+        finish();
     }
 
 

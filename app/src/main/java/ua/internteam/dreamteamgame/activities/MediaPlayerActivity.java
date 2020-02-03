@@ -2,6 +2,8 @@ package ua.internteam.dreamteamgame.activities;
 
 import android.annotation.SuppressLint;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -22,6 +24,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 
+import java.security.cert.Extension;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
@@ -43,6 +46,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     private PlayerView playerView;
     private SimpleExoPlayer player;
     private MediaSource videoSource;
+    private Boolean isPlayingStream;
     private ImageView waitingImage;
 
     private String streamUrl;
@@ -54,8 +58,9 @@ public class MediaPlayerActivity extends AppCompatActivity {
     private Answer answer;
     private AnswerWebSocket answerWebSocket;
 
-
     private int counter;
+    private final Activity context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +69,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
         playerView = findViewById(R.id.simple_player);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
+        isPlayingStream = false;
         counter = 1;
 
         getIntentInfo();
@@ -149,8 +155,17 @@ public class MediaPlayerActivity extends AppCompatActivity {
         player.addAnalyticsListener(new AnalyticsListener() {
             @Override
             public void onIsPlayingChanged(EventTime eventTime, boolean isPlaying) {
-                if (isPlaying)
+                if (isPlaying) {
                     waitingImage.setVisibility(View.GONE);
+                    isPlayingStream = true;
+                }
+                else if(isPlayingStream){
+                    //TODO exit
+                    Intent intent = new Intent(context, ExitActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else player.retry();
             }
         });
 

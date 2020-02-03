@@ -64,6 +64,10 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity android:name=".activities.ExitActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
 
         <meta-data
             android:name="preloaded_fonts"

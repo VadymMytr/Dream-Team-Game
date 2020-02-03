@@ -34,8 +34,10 @@ public class RulesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkBox.isChecked()) {
+                    finish();
                     intent = new Intent(context, BeforeQRPlayerActivity.class);
                     startActivity(intent);
+
                 } else
                     printAttentionToast();
             }
