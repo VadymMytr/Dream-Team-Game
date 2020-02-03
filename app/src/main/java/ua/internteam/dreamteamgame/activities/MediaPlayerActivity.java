@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 
 import java.util.Timer;
@@ -61,6 +62,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_media_player);
         waitingImage = findViewById(R.id.imageView);
         playerView = findViewById(R.id.simple_player);
+        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
         counter = 1;
 
