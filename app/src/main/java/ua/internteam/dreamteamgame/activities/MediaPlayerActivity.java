@@ -1,4 +1,4 @@
-package ua.internteam.dreamteamgame;
+package ua.internteam.dreamteamgame.activities;
 
 import android.annotation.SuppressLint;
 
@@ -26,6 +26,9 @@ import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ua.internteam.dreamteamgame.ActivityStyleHandler;
+import ua.internteam.dreamteamgame.MediaPlayerSource;
+import ua.internteam.dreamteamgame.R;
 import ua.internteam.dreamteamgame.api.WebSockets.AnswerWebSocket;
 import ua.internteam.dreamteamgame.api.WebSockets.TimerWebSocket;
 import ua.internteam.dreamteamgame.api.entity.Answer;
@@ -121,9 +124,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
     private void sendAnswer() {
         String answerText = answerField.getText().toString();
-        Pattern answerPattern = Pattern.compile("[^a-zA-z0-9]");
-        Matcher matcher = answerPattern.matcher(answerText);
-        answerText = matcher.replaceAll("");
         if(answerText.length() >= 100)
             answerText = answerText.substring(0, 100);
 

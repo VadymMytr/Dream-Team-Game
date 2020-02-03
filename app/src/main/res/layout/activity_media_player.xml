@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="TODO"
         android:scaleType="centerCrop"
-        android:visibility="visible"
+        android:visibility="gone"
         app:srcCompat="@drawable/logo" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,15 +57,17 @@
         <EditText
             android:id="@+id/answerET"
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="723dp"
+            android:layout_height="51dp"
             android:autofillHints=""
             android:background="@color/white"
             android:hint="@string/answer"
             android:inputType="textPersonName"
             android:textColor="@color/black"
-            android:visibility="gone"
+            android:textSize="20sp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:targetApi="o" />
 
         <ProgressBar

@@ -1,4 +1,4 @@
-package ua.internteam.dreamteamgame;
+package ua.internteam.dreamteamgame.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import ua.internteam.dreamteamgame.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,13 +46,6 @@ public class MainActivity extends AppCompatActivity {
                     View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
-
-    private void setStyle() {
-        ActivityStyleHandler handler = new ActivityStyleHandler(this,
-                findViewById(R.id.activity_media_player));
-        handler.setStyle();
-    }
-
 }
 
 

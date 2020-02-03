@@ -39,10 +39,4 @@ public class BeforeQRCaptainActivity extends AppCompatActivity {
                     View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
-
-    private void setStyle() {
-        ActivityStyleHandler handler = new ActivityStyleHandler(this,
-                findViewById(R.id.activity_media_player));
-        handler.setStyle();
-    }
 }

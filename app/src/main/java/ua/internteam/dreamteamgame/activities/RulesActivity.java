@@ -1,4 +1,4 @@
-package ua.internteam.dreamteamgame;
+package ua.internteam.dreamteamgame.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import ua.internteam.dreamteamgame.QRCode.BeforeQRCaptainActivity;
 import ua.internteam.dreamteamgame.QRCode.BeforeQRPlayerActivity;
+import ua.internteam.dreamteamgame.R;
 
 public class RulesActivity extends AppCompatActivity {
     private Intent intent;

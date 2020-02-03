@@ -31,10 +31,10 @@
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/scanQR2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.556"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.153" />
+        app:layout_constraintVertical_bias="0.176" />
 
     <Button
         android:id="@+id/scanQR2"

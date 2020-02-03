@@ -6,7 +6,7 @@
     <string name="shareQR">Поділись QR кодом</string>
     <string name="startGame">Почати гру</string>
     <string name="scanQR">Сканувати</string>
-    <string name="captainBeforeQRMessage">1.Прошепочи до оператора, назви кодову фразу та назву команди\n\n 2.Зіскануй QR-code</string>
+    <string name="captainBeforeQRMessage">1.Підійди до оператора, назви кодову фразу та назву команди\n\n 2.Зіскануй QR-code</string>
     <string name="playerBeforeQRMessage">Зіскануй QR-code у друга</string>
     <string name="hello">Вітаємо у грі\nDreamTeam_Game</string>
     <string name="tab">Ознайомитися з\n правилами</string>
