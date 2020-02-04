@@ -25,6 +25,7 @@ public class QRGeneratorActivity extends AppCompatActivity {
 
     String webSocketUrl;
     String serverUrl;
+    String token;
     Team team;
 
     @Override
@@ -61,29 +62,32 @@ public class QRGeneratorActivity extends AppCompatActivity {
         if (bundle != null) {
             isCaptainDevice = bundle.getBoolean("isCaptainDevice");
             bundle.remove("isCaptainDevice");
-            streamUrl = bundle.getString("streamURL");
-            bundle.remove("streamURL");
+//            streamUrl = bundle.getString("streamURL");
+//            bundle.remove("streamURL");
+            team = (Team) bundle.get("team");
+            bundle.remove("team");
+            serverUrl = bundle.getString("serverURL");
+            bundle.remove("serverURL");
 
             if (isCaptainDevice) {
-                serverUrl = bundle.getString("serverURL");
-                bundle.remove("serverURL");
                 webSocketUrl = bundle.getString("websocketURL");
                 bundle.remove("websocketURL");
-                team = (Team) bundle.get("team");
-                bundle.remove("team");
+                token = bundle.getString("token");
+                bundle.remove("token");
             }
         }
     }
 
     private void navigateToVideoPlayerActivity() {
         Intent intent = new Intent(this, MediaPlayerActivity.class);
-        intent.putExtra("streamURL", streamUrl);
+//        intent.putExtra("streamURL", streamUrl);
+        intent.putExtra("team", team);
+        intent.putExtra("serverURL", serverUrl);
         intent.putExtra("isCaptainDevice", isCaptainDevice);
 
         if (isCaptainDevice) {
             intent.putExtra("websocketURL", webSocketUrl);
-            intent.putExtra("serverURL", serverUrl);
-            intent.putExtra("team", team);
+            intent.putExtra("token", token);
         }
 
         startActivity(intent);

@@ -22,7 +22,7 @@ import com.google.zxing.Result;
 import java.io.IOException;
 
 import ua.internteam.dreamteamgame.R;
-import ua.internteam.dreamteamgame.api.Api;
+import ua.internteam.dreamteamgame.api.WebSockets.WebSocket;
 import ua.internteam.dreamteamgame.api.entity.StreamUrl;
 import ua.internteam.dreamteamgame.api.entity.Team;
 
@@ -32,10 +32,15 @@ public class QRScannerActivity extends AppCompatActivity {
 
     private Boolean isCaptainDevice;
 
-    private Api api;
+    private WebSocket webSocket;
+
+    private StreamUrl streamUrl;
     private String serverURL;
     private String webSocketURL;
     private Team team;
+
+    private String token;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +95,16 @@ public class QRScannerActivity extends AppCompatActivity {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        String qrText = result.getText();
-                        setIsCaptainDevice(qrText);
-                        decodeQR(qrText);
+                        //http://<server_url>/<team_id>/<captain_token>
+                        String[] resultParts = result.getText().split("/");
+                        setIsCaptainDevice(resultParts);
+                        decodeQR(resultParts);
+                        if (isCaptainDevice)
+                            webSocket = new WebSocket(webSocketURL, team.getId(), token);
+                        else
+                            webSocket = new WebSocket(webSocketURL, team.getId());
+
+                        navigateToQRCodeShareActivity();
                     }
                 });
             }
@@ -106,65 +118,41 @@ public class QRScannerActivity extends AppCompatActivity {
         });
     }
 
-    private void setIsCaptainDevice(String qrText) {
+    private void setIsCaptainDevice(String[] resultParts) {
         //check for captain mode
-        if (qrText.contains("http")) //captain has server link
+        if (resultParts.length == 5) //captain has token
             isCaptainDevice = true;
-        else if (qrText.contains("rtmp")) //player has stream link
+        else if (resultParts.length == 4) //player hasn't token
             isCaptainDevice = false;
         else
             isCaptainDevice = null;
     }
 
-    private void decodeQR(String qrText) {
+    private void decodeQR(String[] resultParts) {
+        serverURL = resultParts[0] + "//" + resultParts[2];
+        team = new Team(resultParts[3]);
+        webSocketURL = serverURL.replace("http", "ws");
         //captain device:
         if (isCaptainDevice) {
-            //<server_url>|<team_token>
-            String[] resultParts = qrText.split("\\|");
-            serverURL = resultParts[0];
-            webSocketURL = serverURL.replace("http", "ws");
-            team = new Team(resultParts[1]);
-            api = new Api(serverURL);
-            new SendStreamUrlRequest().execute();
+            token = resultParts[4];
         }
-        //player device:
-        else
-            //<stream_url>
-            navigateToQRCodeShareActivity(new StreamUrl(qrText));
     }
 
-    private void navigateToQRCodeShareActivity(StreamUrl streamURL) {
+    private void navigateToQRCodeShareActivity() {
         Intent intent;
         intent = new Intent(activity, QRGeneratorActivity.class);
-        intent.putExtra("streamURL", streamURL.getUrl());
+//        intent.putExtra("streamURL", streamUrl.getUrl());
+        intent.putExtra("team", team);
+        intent.putExtra("serverURL", serverURL);
         intent.putExtra("isCaptainDevice", isCaptainDevice);
 
         //captain also have to put serverURL and team info
         if (isCaptainDevice) {
-            intent.putExtra("serverURL", serverURL);
             intent.putExtra("websocketURL", webSocketURL);
-            intent.putExtra("team", team);
+            intent.putExtra("token", token);
         }
 
         startActivity(intent);
         finish();
-    }
-
-    class SendStreamUrlRequest extends AsyncTask<Void, Integer, StreamUrl> {
-        @Override
-        protected StreamUrl doInBackground(Void... unused) {
-            try {
-                return api.getStreamUrl(team);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(StreamUrl streamUrl) {
-            if (streamUrl != null)
-                navigateToQRCodeShareActivity(streamUrl);
-        }
     }
 }

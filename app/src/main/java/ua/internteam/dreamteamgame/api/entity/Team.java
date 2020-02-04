@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 public class Team implements Serializable {
 
-    private String token;
+    private String id;
     private String name;
 
-    public Team(String token) {
-        this.token = token;
+    public Team(String id) {
+        this.id = id;
         this.name = "";
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setToken(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -24,14 +24,14 @@ public class Team implements Serializable {
         this.name = name;
     }
 
-    public String getToken() {
-        return token;
+    public String getId() {
+        return id;
     }
 
     @Override
     public String toString() {
         return "Team{" +
-                "token='" + token + '\'' +
+                "token='" +  + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }

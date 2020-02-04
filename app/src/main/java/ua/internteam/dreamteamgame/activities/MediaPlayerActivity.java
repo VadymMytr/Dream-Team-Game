@@ -24,17 +24,14 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 
-import java.security.cert.Extension;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import ua.internteam.dreamteamgame.ActivityStyleHandler;
+import ua.internteam.dreamteamgame.Connection;
 import ua.internteam.dreamteamgame.MediaPlayerSource;
 import ua.internteam.dreamteamgame.R;
-import ua.internteam.dreamteamgame.api.WebSockets.AnswerWebSocket;
-import ua.internteam.dreamteamgame.api.WebSockets.TimerWebSocket;
+import ua.internteam.dreamteamgame.api.WebSockets.WebSocket;
 import ua.internteam.dreamteamgame.api.entity.Answer;
 import ua.internteam.dreamteamgame.api.entity.Team;
 
@@ -42,6 +39,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     private Boolean isCaptainDevice;
 
     private Team team;
+    private String token;
 
     private PlayerView playerView;
     private SimpleExoPlayer player;
@@ -51,13 +49,14 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
     private String streamUrl;
 
+    public static Connection connection;
+
     private String serverUrl;
     private String webSocketUrl;
     private static TimeoutBar timeoutBar;
     private EditText answerField;
     private Answer answer;
-    private AnswerWebSocket answerWebSocket;
-
+    private WebSocket webSocket;
     private int counter;
     private final Activity context = this;
     private Anticheat anticheat;
@@ -70,6 +69,15 @@ public class MediaPlayerActivity extends AppCompatActivity {
         playerView = findViewById(R.id.simple_player);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
+        //TODO WARNING GOVNOCODE
+        connection = new Connection() {
+            @Override
+            public void connect(String url) {
+                streamUrl = url;
+            }
+        };
+
+
         isPlayingStream = false;
         anticheat = new Anticheat(context);
         counter = 1;
@@ -80,10 +88,12 @@ public class MediaPlayerActivity extends AppCompatActivity {
             timeoutBar = new TimeoutBar(findViewById(R.id.timeoutBar));
             answerField = findViewById(R.id.answerET);
 
-            answerWebSocket = new AnswerWebSocket(webSocketUrl);
-            TimerWebSocket timerWebSocket = new TimerWebSocket();
-            timerWebSocket.init(webSocketUrl);
+            webSocket = new WebSocket(webSocketUrl, team.getId(), token);
         }
+        else
+            webSocket = new WebSocket(webSocketUrl, team.getId());
+
+
         setStyle();
         initializePlayer();
     }
@@ -112,16 +122,18 @@ public class MediaPlayerActivity extends AppCompatActivity {
         if (bundle != null) {
             isCaptainDevice = bundle.getBoolean("isCaptainDevice");
             bundle.remove("isCaptainDevice");
-            streamUrl = bundle.getString("streamURL");
-            bundle.remove("streamURL");
+            serverUrl = bundle.getString("serverURL");
+            bundle.remove("serverURL");
+//            streamUrl = bundle.getString("streamURL");
+//            bundle.remove("streamURL");
+            team = (Team) bundle.get("team");
+            bundle.remove("team");
 
             if (isCaptainDevice) {
-                serverUrl = bundle.getString("serverURL");
-                bundle.remove("serverURL");
                 webSocketUrl = bundle.getString("websocketURL");
                 bundle.remove("websocketURL");
-                team = (Team) bundle.get("team");
-                bundle.remove("team");
+                token = bundle.getString("token");
+                bundle.remove("token");
             }
         }
     }
@@ -131,10 +143,10 @@ public class MediaPlayerActivity extends AppCompatActivity {
         if(answerText.length() >= 100)
             answerText = answerText.substring(0, 100);
 
-        answer = new Answer(counter++, team.getToken(), answerText);
+        answer = new Answer(counter++, answerText);
         System.out.println(answerText);
         answerField.setText("");
-        answerWebSocket.sendAnswer(answer);
+        webSocket.sendAnswer(answer);
     }
 
     private void initializePlayer() {
@@ -165,7 +177,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
                 else player.retry();
             }
         });
-
         player.prepare(videoSource);
     }
 

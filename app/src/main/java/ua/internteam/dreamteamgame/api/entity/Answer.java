@@ -3,11 +3,9 @@ package ua.internteam.dreamteamgame.api.entity;
 public class Answer {
     private int id;
     private int number;
-    private String teamToken;
     private String text;
 
-    public Answer(int number, String teamToken, String text) {
-        this.teamToken = teamToken;
+    public Answer(int number, String text) {
         this.number = number;
         this.text = text;
     }
@@ -37,20 +35,11 @@ public class Answer {
         this.number = number;
     }
 
-    public String getTeamToken() {
-        return teamToken;
-    }
-
-    public void setTeamToken(String teamToken) {
-        this.teamToken = teamToken;
-    }
-
     @Override
     public String toString() {
         return "Answer{" +
                 "id='" + id + '\'' +
                 ", number='" + number + '\'' +
-                ", teamToken='" + teamToken + '\'' +
                 ", text='" + text + '\'' +
                 '}';
     }
