@@ -2,6 +2,8 @@ package ua.internteam.dreamteamgame.activities;
 
 import android.annotation.SuppressLint;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -22,6 +24,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 
+import java.security.cert.Extension;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
@@ -43,6 +46,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     private PlayerView playerView;
     private SimpleExoPlayer player;
     private MediaSource videoSource;
+    private Boolean isPlayingStream;
     private ImageView waitingImage;
 
     private String streamUrl;
@@ -54,8 +58,10 @@ public class MediaPlayerActivity extends AppCompatActivity {
     private Answer answer;
     private AnswerWebSocket answerWebSocket;
 
-
     private int counter;
+    private final Activity context = this;
+    private Anticheat anticheat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +70,8 @@ public class MediaPlayerActivity extends AppCompatActivity {
         playerView = findViewById(R.id.simple_player);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
+        isPlayingStream = false;
+        anticheat = new Anticheat(context);
         counter = 1;
 
         getIntentInfo();
@@ -89,13 +97,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         // anticheat toast
-        Toast toast = Toast.makeText(this, "Порушення правил гри веде до покарання.", Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        LinearLayout toastContainer = (LinearLayout) toast.getView();
-        ImageView attentionImage = new ImageView(getApplicationContext());
-        attentionImage.setImageResource(R.drawable.attention1);
-        toastContainer.addView(attentionImage, 0);
-        toast.show();
+        anticheat.showAttentionMessage();
         //TODO send info about cheating to operator
     }
 
@@ -149,8 +151,18 @@ public class MediaPlayerActivity extends AppCompatActivity {
         player.addAnalyticsListener(new AnalyticsListener() {
             @Override
             public void onIsPlayingChanged(EventTime eventTime, boolean isPlaying) {
-                if (isPlaying)
+                if (isPlaying) {
                     waitingImage.setVisibility(View.GONE);
+                    isPlayingStream = true;
+                }
+                else if(isPlayingStream){
+                    //TODO exit
+                    anticheat.setWorking(false);
+                    Intent intent = new Intent(context, ExitActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else player.retry();
             }
         });
 
@@ -226,6 +238,40 @@ public class MediaPlayerActivity extends AppCompatActivity {
         public TimeoutBar(ProgressBar progressBar) {
             this.progressBar = progressBar;
             answerTimeout = progressBar.getMax();
+        }
+    }
+    class Anticheat{
+        private Boolean working;
+        private Activity activity;
+
+        public Boolean getWorking() {
+            return working;
+        }
+
+        public void setWorking(Boolean working) {
+            this.working = working;
+        }
+
+        public Anticheat(Activity activity){
+            working = true;
+            this.activity = activity;
+        }
+
+        public void showAttentionMessage(){
+            if(working) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast toast = Toast.makeText(activity, "Порушення правил гри веде до покарання.", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        LinearLayout toastContainer = (LinearLayout) toast.getView();
+                        ImageView attentionImage = new ImageView(getApplicationContext());
+                        attentionImage.setImageResource(R.drawable.attention1);
+                        toastContainer.addView(attentionImage, 0);
+                        toast.show();
+                    }
+                });
+            }
         }
     }
 }

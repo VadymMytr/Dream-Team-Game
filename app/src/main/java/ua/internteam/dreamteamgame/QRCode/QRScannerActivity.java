@@ -147,6 +147,7 @@ public class QRScannerActivity extends AppCompatActivity {
         }
 
         startActivity(intent);
+        finish();
     }
 
     class SendStreamUrlRequest extends AsyncTask<Void, Integer, StreamUrl> {

@@ -27,6 +27,7 @@ public class BeforeQRPlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent nextIntent = new Intent(currentActivity, QRScannerActivity.class);
                 startActivity(nextIntent);
+                finish();
             }
         });
     }

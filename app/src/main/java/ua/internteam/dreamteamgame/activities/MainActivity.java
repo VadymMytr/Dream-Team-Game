@@ -16,6 +16,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
+
         setContentView(R.layout.activity_main);
         Button btn = (Button) findViewById(R.id.StreamBtn);
 //        setStyle();
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         //navigate to rules activity
         Intent intent = new Intent(this, RulesActivity.class);
         startActivity(intent);
+        finish();
     }
 
 
