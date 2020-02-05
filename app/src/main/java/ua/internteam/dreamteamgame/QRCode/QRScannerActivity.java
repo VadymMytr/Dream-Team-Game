@@ -99,11 +99,6 @@ public class QRScannerActivity extends AppCompatActivity {
                         String[] resultParts = result.getText().split("/");
                         setIsCaptainDevice(resultParts);
                         decodeQR(resultParts);
-                        if (isCaptainDevice)
-                            webSocket = new WebSocket(webSocketURL, team.getId(), token);
-                        else
-                            webSocket = new WebSocket(webSocketURL, team.getId());
-
                         navigateToQRCodeShareActivity();
                     }
                 });

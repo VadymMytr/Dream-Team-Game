@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.WebSocketListener;
 import ua.internteam.dreamteamgame.api.entity.Answer;
 
 public class WebSocket {
@@ -34,7 +32,7 @@ public class WebSocket {
     private void createRequest(String teamId) {
         this.request = new Request.Builder()
                 .addHeader("TeamId", teamId)
-                .url(this.webSocketUrl + "/answer")
+                .url(this.webSocketUrl + "/socket")
                 .build();
     }
 
@@ -42,7 +40,7 @@ public class WebSocket {
         this.request = new Request.Builder()
                 .addHeader("TeamId", teamId)
                 .addHeader("Token", captainToken)
-                .url(this.webSocketUrl + "/answer")
+                .url(this.webSocketUrl + "/socket")
                 .build();
     }
 

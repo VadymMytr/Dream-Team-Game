@@ -1,10 +1,10 @@
 package ua.internteam.dreamteamgame.api.entity;
 
 public class StreamUrl {
-    String url;
+    private String url;
 
-    public StreamUrl(String url){
-        this.url=url;
+    public StreamUrl(String url) {
+        this.url = url;
     }
 
     public String getUrl() {

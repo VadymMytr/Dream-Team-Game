@@ -33,6 +33,7 @@ import ua.internteam.dreamteamgame.MediaPlayerSource;
 import ua.internteam.dreamteamgame.R;
 import ua.internteam.dreamteamgame.api.WebSockets.WebSocket;
 import ua.internteam.dreamteamgame.api.entity.Answer;
+import ua.internteam.dreamteamgame.api.entity.StreamUrl;
 import ua.internteam.dreamteamgame.api.entity.Team;
 
 public class MediaPlayerActivity extends AppCompatActivity {
@@ -47,9 +48,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     private Boolean isPlayingStream;
     private ImageView waitingImage;
 
-    private String streamUrl;
-
-    public static Connection connection;
+    public static StreamUrl streamUrl;
 
     private String serverUrl;
     private String webSocketUrl;
@@ -69,33 +68,20 @@ public class MediaPlayerActivity extends AppCompatActivity {
         playerView = findViewById(R.id.simple_player);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
-        //TODO WARNING GOVNOCODE
-        connection = new Connection() {
-            @Override
-            public void connect(String url) {
-                streamUrl = url;
-            }
-        };
-
-
         isPlayingStream = false;
         anticheat = new Anticheat(context);
         counter = 1;
 
         getIntentInfo();
-
         if (isCaptainDevice) {
             timeoutBar = new TimeoutBar(findViewById(R.id.timeoutBar));
             answerField = findViewById(R.id.answerET);
 
             webSocket = new WebSocket(webSocketUrl, team.getId(), token);
-        }
-        else
+        } else
             webSocket = new WebSocket(webSocketUrl, team.getId());
 
-
-        setStyle();
-        initializePlayer();
+        new PlayerInitializeTimer().playerInit();
     }
 
     @Override
@@ -124,8 +110,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
             bundle.remove("isCaptainDevice");
             serverUrl = bundle.getString("serverURL");
             bundle.remove("serverURL");
-//            streamUrl = bundle.getString("streamURL");
-//            bundle.remove("streamURL");
             team = (Team) bundle.get("team");
             bundle.remove("team");
 
@@ -140,7 +124,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
     private void sendAnswer() {
         String answerText = answerField.getText().toString();
-        if(answerText.length() >= 100)
+        if (answerText.length() >= 100)
             answerText = answerText.substring(0, 100);
 
         answer = new Answer(counter++, answerText);
@@ -152,7 +136,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     private void initializePlayer() {
         player = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
-        videoSource = new MediaPlayerSource(streamUrl).getMediaSource();
+        videoSource = new MediaPlayerSource(streamUrl.getUrl()).getMediaSource();
         player.setPlayWhenReady(true);
         player.addListener(new Player.EventListener() {
             @Override
@@ -166,15 +150,13 @@ public class MediaPlayerActivity extends AppCompatActivity {
                 if (isPlaying) {
                     waitingImage.setVisibility(View.GONE);
                     isPlayingStream = true;
-                }
-                else if(isPlayingStream){
+                } else if (isPlayingStream) {
                     //TODO exit
                     anticheat.setWorking(false);
                     Intent intent = new Intent(context, ExitActivity.class);
                     startActivity(intent);
                     finish();
-                }
-                else player.retry();
+                } else player.retry();
             }
         });
         player.prepare(videoSource);
@@ -251,7 +233,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
             answerTimeout = progressBar.getMax();
         }
     }
-    class Anticheat{
+    class Anticheat {
         private Boolean working;
         private Activity activity;
 
@@ -263,13 +245,13 @@ public class MediaPlayerActivity extends AppCompatActivity {
             this.working = working;
         }
 
-        public Anticheat(Activity activity){
+        public Anticheat(Activity activity) {
             working = true;
             this.activity = activity;
         }
 
-        public void showAttentionMessage(){
-            if(working) {
+        public void showAttentionMessage() {
+            if (working) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -283,6 +265,35 @@ public class MediaPlayerActivity extends AppCompatActivity {
                     }
                 });
             }
+        }
+    }
+    class PlayerInitializeTimer {
+        private Timer timer;
+
+        public void playerInit() {
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    String url = null;
+                    try{
+                        url = streamUrl.getUrl();
+                    }
+                    catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
+
+                    if (url != null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                initializePlayer();
+                            }
+                        });
+                        timer.cancel();
+                    }
+                }
+            }, 0, 20);
         }
     }
 }
