@@ -65,10 +65,10 @@ public class QRGeneratorActivity extends AppCompatActivity {
             bundle.remove("team");
             serverUrl = bundle.getString("serverURL");
             bundle.remove("serverURL");
+            webSocketUrl = bundle.getString("websocketURL");
+            bundle.remove("websocketURL");
 
             if (isCaptainDevice) {
-                webSocketUrl = bundle.getString("websocketURL");
-                bundle.remove("websocketURL");
                 token = bundle.getString("token");
                 bundle.remove("token");
             }
@@ -81,9 +81,9 @@ public class QRGeneratorActivity extends AppCompatActivity {
         intent.putExtra("team", team);
         intent.putExtra("serverURL", serverUrl);
         intent.putExtra("isCaptainDevice", isCaptainDevice);
+        intent.putExtra("websocketURL", webSocketUrl);
 
         if (isCaptainDevice) {
-            intent.putExtra("websocketURL", webSocketUrl);
             intent.putExtra("token", token);
         }
 

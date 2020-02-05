@@ -113,10 +113,10 @@ public class MediaPlayerActivity extends AppCompatActivity {
             bundle.remove("serverURL");
             team = (Team) bundle.get("team");
             bundle.remove("team");
+            webSocketUrl = bundle.getString("websocketURL");
+            bundle.remove("websocketURL");
 
             if (isCaptainDevice) {
-                webSocketUrl = bundle.getString("websocketURL");
-                bundle.remove("websocketURL");
                 token = bundle.getString("token");
                 bundle.remove("token");
             }

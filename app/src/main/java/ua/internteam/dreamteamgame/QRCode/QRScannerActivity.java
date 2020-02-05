@@ -136,10 +136,10 @@ public class QRScannerActivity extends AppCompatActivity {
         intent.putExtra("team", team);
         intent.putExtra("serverURL", serverURL);
         intent.putExtra("isCaptainDevice", isCaptainDevice);
+        intent.putExtra("websocketURL", webSocketURL);
 
         //captain also have to put serverURL and team info
         if (isCaptainDevice) {
-            intent.putExtra("websocketURL", webSocketURL);
             intent.putExtra("token", token);
         }
 
