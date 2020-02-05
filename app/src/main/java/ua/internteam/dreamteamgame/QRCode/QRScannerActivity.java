@@ -32,9 +32,6 @@ public class QRScannerActivity extends AppCompatActivity {
 
     private Boolean isCaptainDevice;
 
-    private WebSocket webSocket;
-
-    private StreamUrl streamUrl;
     private String serverURL;
     private String webSocketURL;
     private Team team;
@@ -136,7 +133,6 @@ public class QRScannerActivity extends AppCompatActivity {
     private void navigateToQRCodeShareActivity() {
         Intent intent;
         intent = new Intent(activity, QRGeneratorActivity.class);
-//        intent.putExtra("streamURL", streamUrl.getUrl());
         intent.putExtra("team", team);
         intent.putExtra("serverURL", serverURL);
         intent.putExtra("isCaptainDevice", isCaptainDevice);

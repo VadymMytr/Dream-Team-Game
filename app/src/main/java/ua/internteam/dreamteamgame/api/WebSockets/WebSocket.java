@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import ua.internteam.dreamteamgame.api.entity.Answer;
+import ua.internteam.dreamteamgame.api.entity.AnticheatMesage;
 
 public class WebSocket {
     private static OkHttpClient client;
@@ -50,5 +51,9 @@ public class WebSocket {
 
     public void sendAnswer(Answer answer) {
         webSocket.send(new Gson().toJson(answer));
+    }
+
+    public void sendCheatingMessage(AnticheatMesage anticheatMesage){
+        webSocket.send(new Gson().toJson(anticheatMesage));
     }
 }

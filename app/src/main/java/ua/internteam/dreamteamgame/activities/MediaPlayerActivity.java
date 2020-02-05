@@ -28,11 +28,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import ua.internteam.dreamteamgame.ActivityStyleHandler;
-import ua.internteam.dreamteamgame.Connection;
 import ua.internteam.dreamteamgame.MediaPlayerSource;
 import ua.internteam.dreamteamgame.R;
 import ua.internteam.dreamteamgame.api.WebSockets.WebSocket;
 import ua.internteam.dreamteamgame.api.entity.Answer;
+import ua.internteam.dreamteamgame.api.entity.AnticheatMesage;
 import ua.internteam.dreamteamgame.api.entity.StreamUrl;
 import ua.internteam.dreamteamgame.api.entity.Team;
 
@@ -95,6 +95,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
         // anticheat toast
         anticheat.showAttentionMessage();
         //TODO send info about cheating to operator
+        webSocket.sendCheatingMessage(new AnticheatMesage(true));
     }
 
     private void setStyle() {

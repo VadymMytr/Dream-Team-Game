@@ -9,4 +9,8 @@ public class AnticheatMesage {
     public boolean isCheating(){
         return isCheating;
     }
+
+    public AnticheatMesage(boolean isCheating){
+        this.isCheating = isCheating;
+    }
 }

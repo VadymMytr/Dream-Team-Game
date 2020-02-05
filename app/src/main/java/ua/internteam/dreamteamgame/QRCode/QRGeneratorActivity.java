@@ -21,7 +21,6 @@ import ua.internteam.dreamteamgame.api.entity.Team;
 
 public class QRGeneratorActivity extends AppCompatActivity {
     Boolean isCaptainDevice;
-    String streamUrl;
 
     String webSocketUrl;
     String serverUrl;
@@ -34,7 +33,7 @@ public class QRGeneratorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qr_code_generator);
 
         getIntentInfo();
-        generateQr(streamUrl);
+        generateQr(serverUrl + "/" + team.getId());
         //TODO add button and navigation to next activity on click
         Button streamBtn = findViewById(R.id.StreamBtn);
         streamBtn.setOnClickListener(new View.OnClickListener() {
@@ -45,8 +44,8 @@ public class QRGeneratorActivity extends AppCompatActivity {
         });
     }
 
-    private void generateQr(String streamLink) {
-        QRGEncoder qrgEncoder = new QRGEncoder(streamLink, null, QRGContents.Type.TEXT, 300);
+    private void generateQr(String qrText) {
+        QRGEncoder qrgEncoder = new QRGEncoder(qrText, null, QRGContents.Type.TEXT, 300);
         Bitmap bitmap;
         ImageView qrImage = findViewById(R.id.qrImage);
         try {
@@ -62,8 +61,6 @@ public class QRGeneratorActivity extends AppCompatActivity {
         if (bundle != null) {
             isCaptainDevice = bundle.getBoolean("isCaptainDevice");
             bundle.remove("isCaptainDevice");
-//            streamUrl = bundle.getString("streamURL");
-//            bundle.remove("streamURL");
             team = (Team) bundle.get("team");
             bundle.remove("team");
             serverUrl = bundle.getString("serverURL");
