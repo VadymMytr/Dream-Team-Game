@@ -50,13 +50,11 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
     public static StreamUrl streamUrl;
 
-    private String serverUrl;
     private String webSocketUrl;
     private static TimeoutBar timeoutBar;
     private EditText answerField;
     private Answer answer;
     private WebSocket webSocket;
-    private int counter;
     private final Activity context = this;
     private Anticheat anticheat;
 
@@ -64,13 +62,13 @@ public class MediaPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_player);
+        setStyle();
         waitingImage = findViewById(R.id.imageView);
         playerView = findViewById(R.id.simple_player);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
         isPlayingStream = false;
         anticheat = new Anticheat(context);
-        counter = 1;
 
         getIntentInfo();
         if (isCaptainDevice) {
@@ -109,8 +107,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
         if (bundle != null) {
             isCaptainDevice = bundle.getBoolean("isCaptainDevice");
             bundle.remove("isCaptainDevice");
-            serverUrl = bundle.getString("serverURL");
-            bundle.remove("serverURL");
             team = (Team) bundle.get("team");
             bundle.remove("team");
             webSocketUrl = bundle.getString("websocketURL");
@@ -128,7 +124,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
         if (answerText.length() >= 100)
             answerText = answerText.substring(0, 100);
 
-        answer = new Answer(counter++, answerText);
+        answer = new Answer(answerText, team.getId());
         System.out.println(answerText);
         answerField.setText("");
         webSocket.sendAnswer(answer);
@@ -148,19 +144,21 @@ public class MediaPlayerActivity extends AppCompatActivity {
         player.addAnalyticsListener(new AnalyticsListener() {
             @Override
             public void onIsPlayingChanged(EventTime eventTime, boolean isPlaying) {
-                if (isPlaying) {
+                if (isPlaying && !isPlayingStream) {
                     waitingImage.setVisibility(View.GONE);
                     isPlayingStream = true;
-                } else if (isPlayingStream) {
-                    //TODO exit
-                    anticheat.setWorking(false);
-                    Intent intent = new Intent(context, ExitActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else player.retry();
+                }
+//                else if (!isPlaying && isPlayingStream) {
+//                    //TODO exit
+//                    anticheat.setWorking(false);
+//                    Intent intent = new Intent(context, ExitActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                }
             }
         });
         player.prepare(videoSource);
+
     }
 
     public static void initializeTimeoutBar(int time) {

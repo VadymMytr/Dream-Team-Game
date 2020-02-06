@@ -93,7 +93,9 @@ public class QRScannerActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         //http://<server_url>/<team_id>/<captain_token>
-                        String[] resultParts = result.getText().split("/");
+                        String res = result.getText();
+                        String[] resultParts = res.split("/");
+                        System.out.println(res);
                         setIsCaptainDevice(resultParts);
                         decodeQR(resultParts);
                         navigateToQRCodeShareActivity();

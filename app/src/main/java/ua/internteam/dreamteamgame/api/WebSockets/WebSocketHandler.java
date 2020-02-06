@@ -15,24 +15,8 @@ import ua.internteam.dreamteamgame.api.entity.Time;
 
 public class WebSocketHandler extends WebSocketListener {
 
-    private Gson gson;
-    @Override
-    public void onOpen(WebSocket webSocket, Response response) {
-        //get stream url
-//        String body = null;
-//        StreamUrl url = null;
-//        try {
-//            body = response.body().string();
-//            url = new Gson().fromJson(body, StreamUrl.class);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        if (url != null)
-//            MediaPlayerActivity.streamUrl = url;
-//        System.out.println(url.getUrl());
-        gson = new Gson();
-    }
-
+    private static Gson gson = new Gson();
+    private static final Integer TIMER_DELAY_IN_SECONDS = 0;
     @Override
     public void onMessage(WebSocket webSocket, String text) {
         super.onMessage(webSocket, text);
@@ -40,8 +24,9 @@ public class WebSocketHandler extends WebSocketListener {
     }
 
     private void parse(String text) {
-        if(gson.fromJson(text, StreamUrl.class) != null){
-            StreamUrl url = null;
+        StreamUrl url = gson.fromJson(text, StreamUrl.class);
+        if(url.getUrl() != null){
+
             try {
                 url = gson.fromJson(text, StreamUrl.class);
             } catch (NullPointerException e) {
@@ -59,7 +44,7 @@ public class WebSocketHandler extends WebSocketListener {
                 e.printStackTrace();
             }
             if (time != null)
-                MediaPlayerActivity.initializeTimeoutBar(time.getSeconds());
+                MediaPlayerActivity.initializeTimeoutBar(time.getSeconds() - TIMER_DELAY_IN_SECONDS);
         }
     }
 }

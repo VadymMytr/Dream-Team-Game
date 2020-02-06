@@ -1,46 +1,19 @@
 package ua.internteam.dreamteamgame.api.entity;
 
 public class Answer {
-    private int id;
-    private int number;
+    private String teamId;
     private String text;
 
-    public Answer(int number, String text) {
-        this.number = number;
+    public Answer(String text, String teamId) {
         this.text = text;
+        this.teamId = teamId;
     }
 
-
-    public int getId() {
-        return id;
+    public String getId() {
+        return teamId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(String teamId) {
+        this.teamId = teamId;
     }
-
-    public String getText() {
-        return text;
     }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    @Override
-    public String toString() {
-        return "Answer{" +
-                "id='" + id + '\'' +
-                ", number='" + number + '\'' +
-                ", text='" + text + '\'' +
-                '}';
-    }
-}
