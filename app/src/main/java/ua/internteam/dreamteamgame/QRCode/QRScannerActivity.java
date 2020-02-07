@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -19,11 +18,7 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 
-import java.io.IOException;
-
 import ua.internteam.dreamteamgame.R;
-import ua.internteam.dreamteamgame.api.WebSockets.WebSocket;
-import ua.internteam.dreamteamgame.api.entity.StreamUrl;
 import ua.internteam.dreamteamgame.api.entity.Team;
 
 public class QRScannerActivity extends AppCompatActivity {

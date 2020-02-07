@@ -3,7 +3,6 @@ package ua.internteam.dreamteamgame.activities;
 import android.annotation.SuppressLint;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -30,7 +29,7 @@ import java.util.TimerTask;
 import ua.internteam.dreamteamgame.ActivityStyleHandler;
 import ua.internteam.dreamteamgame.MediaPlayerSource;
 import ua.internteam.dreamteamgame.R;
-import ua.internteam.dreamteamgame.api.WebSockets.WebSocket;
+import ua.internteam.dreamteamgame.api.WebSockets.Socket;
 import ua.internteam.dreamteamgame.api.entity.Answer;
 import ua.internteam.dreamteamgame.api.entity.AnticheatMesage;
 import ua.internteam.dreamteamgame.api.entity.StreamUrl;
@@ -54,7 +53,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     private static TimeoutBar timeoutBar;
     private EditText answerField;
     private Answer answer;
-    private WebSocket webSocket;
+    public static Socket webSocket;
     private final Activity context = this;
     private Anticheat anticheat;
 
@@ -75,9 +74,9 @@ public class MediaPlayerActivity extends AppCompatActivity {
             timeoutBar = new TimeoutBar(findViewById(R.id.timeoutBar));
             answerField = findViewById(R.id.answerET);
 
-            webSocket = new WebSocket(webSocketUrl, team.getId(), token);
+            webSocket = new Socket(webSocketUrl, team.getId(), token);
         } else
-            webSocket = new WebSocket(webSocketUrl, team.getId());
+            webSocket = new Socket(webSocketUrl, team.getId());
 
         new PlayerInitializeTimer().playerInit();
     }
@@ -92,7 +91,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
         super.onStop();
         // anticheat toast
         anticheat.showAttentionMessage();
-        //TODO send info about cheating to operator
         webSocket.sendCheatingMessage(new AnticheatMesage(true));
     }
 
@@ -148,8 +146,8 @@ public class MediaPlayerActivity extends AppCompatActivity {
                     waitingImage.setVisibility(View.GONE);
                     isPlayingStream = true;
                 }
-//                else if (!isPlaying && isPlayingStream) {
-//                    //TODO exit
+                //TODO exit
+//                else if (!isPlaying && isPlayingStream){
 //                    anticheat.setWorking(false);
 //                    Intent intent = new Intent(context, ExitActivity.class);
 //                    startActivity(intent);
@@ -279,7 +277,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
                         url = streamUrl.getUrl();
                     }
                     catch (NullPointerException e){
-                        e.printStackTrace();
+                        System.out.println("shit");
                     }
 
                     if (url != null) {
@@ -292,7 +290,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
                         timer.cancel();
                     }
                 }
-            }, 0, 20);
+            }, 0, 1000);
         }
     }
 }

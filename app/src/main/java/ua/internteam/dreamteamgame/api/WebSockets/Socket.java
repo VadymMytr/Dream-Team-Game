@@ -4,32 +4,36 @@ import com.google.gson.Gson;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.WebSocket;
 import ua.internteam.dreamteamgame.api.entity.Answer;
 import ua.internteam.dreamteamgame.api.entity.AnticheatMesage;
 
-public class WebSocket {
+public class Socket {
     private static OkHttpClient client;
     private static String webSocketUrl;
     private static Request request;
-    private static okhttp3.WebSocket webSocket;
+    private static WebSocket webSocket;
 
-    public WebSocket(String webSocketUrl) {
+    public Socket(String webSocketUrl) {
         this.client = new OkHttpClient();
         this.webSocketUrl = webSocketUrl;
     }
 
-    public WebSocket(String webSocketUrl, String teamId) {
+    public Socket(String webSocketUrl, String teamId) {
         this(webSocketUrl);
         createRequest(teamId);
         createWebSocket();
     }
 
-    public WebSocket(String webSocketUrl, String teamId, String captainToken) {
+    public Socket(String webSocketUrl, String teamId, String captainToken) {
         this(webSocketUrl);
         createRequest(teamId, captainToken);
         createWebSocket();
     }
 
+    public Socket(WebSocket webSocket){
+        this.webSocket = webSocket;
+    }
     private void createRequest(String teamId) {
         this.request = new Request.Builder()
                 .addHeader("TeamId", teamId)
@@ -51,6 +55,7 @@ public class WebSocket {
 
     public void sendAnswer(Answer answer) {
         webSocket.send(new Gson().toJson(answer));
+        System.out.println(new Gson().toJson(answer));
     }
 
     public void sendCheatingMessage(AnticheatMesage anticheatMesage){

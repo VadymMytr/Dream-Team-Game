@@ -34,7 +34,6 @@ public class QRGeneratorActivity extends AppCompatActivity {
 
         getIntentInfo();
         generateQr(serverUrl + "/" + team.getId());
-        //TODO add button and navigation to next activity on click
         Button streamBtn = findViewById(R.id.StreamBtn);
         streamBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -19,7 +19,6 @@ public class WebSocketHandler extends WebSocketListener {
     private static final Integer TIMER_DELAY_IN_SECONDS = 0;
     @Override
     public void onMessage(WebSocket webSocket, String text) {
-        super.onMessage(webSocket, text);
         parse(text);
     }
 
@@ -45,6 +44,16 @@ public class WebSocketHandler extends WebSocketListener {
             }
             if (time != null)
                 MediaPlayerActivity.initializeTimeoutBar(time.getSeconds() - TIMER_DELAY_IN_SECONDS);
+        }
+    }
+
+    @Override
+    public void onClosed(WebSocket webSocket, int code, String reason) {
+        try{
+            MediaPlayerActivity.webSocket = new Socket(webSocket);
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

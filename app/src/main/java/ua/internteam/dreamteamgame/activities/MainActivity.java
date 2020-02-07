@@ -10,8 +10,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ua.internteam.dreamteamgame.R;
-import ua.internteam.dreamteamgame.api.WebSockets.WebSocket;
-import ua.internteam.dreamteamgame.api.entity.Answer;
 
 public class MainActivity extends AppCompatActivity {
 
